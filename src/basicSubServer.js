@@ -5,6 +5,7 @@ var sub = redis.createClient(host);
 var sub2 = redis.createClient(host);
 sub.select(3);
 sub2.select(3);
+var http = require('http').Server(app)
 
 //basic APP SERVER
 port =3001

@@ -7,6 +7,7 @@ import gql from 'graphql-tag'
 import { ApolloClient } from 'apollo-client';
 import { HttpLink } from 'apollo-link-http';
 import { InMemoryCache } from 'apollo-cache-inmemory';
+import Websocket from 'react-websocket';
 //import styled from "styled-components";
 
 // let defaultStyle = { 
@@ -24,6 +25,13 @@ export default class AgentPanel extends React.Component {
       this.state =  {"data":{"agents":[{"id":"2","lastname":null,"firstname":null,"ext":"573","__typename":"AgentType"},]}}
       
     }
+
+    handleData(data) {
+      let result = JSON.parse(data);
+      console.log(result);
+    }
+
+
     componentDidMount() {
       this.client.query({ query: gql`{agents{id,lastname, firstname, ext}}` }).then(this.onDataRecieved.bind(this))
       setInterval(() => {this.client.cache.reset(),3000; 
@@ -52,9 +60,6 @@ export default class AgentPanel extends React.Component {
 
     render () {
       
-
-     
-      
     //const cells= this.state.agents.map(<AgentItem/>);  
     //const cells= this.state.forEach(element => { return( <AgentItem/>)});  
     console.log(this.state);
@@ -73,6 +78,8 @@ export default class AgentPanel extends React.Component {
           return <AgentItem key ={l.id} id={l.id} prenom={l.prenom} ext={l.ext} nom={l.nom}/>;
         })
       }
+       <Websocket url='ws://localhost:3001/agents'
+              onMessage={this.handleData.bind(this)}/>
      </Cell>   
       ); 
     }
