@@ -1,11 +1,10 @@
 import * as React from 'react';
 
 import { Grid, Cell } from 'styled-css-grid';
-import AgentPanel from './panels/AgentPanel';
-import ClientPanel from './panels/ClientPanel';
-import TicketsPanel from './panels/TicketsPanel';
 import StatsPanel from './panels/StatsPanel';
 import MapPanel from './panels/MapPanel';
+import MainAgentPanelLayout from './panels/MainAgentPanelLayout';
+
 var letterStyle = {
     padding: 10,
     margin: 10,
@@ -13,13 +12,16 @@ var letterStyle = {
     fontSize: 14,
     textAlign: "center"
   };
+
 export default class Layout extends React.Component {
     render() {
         return(
         <Grid style={letterStyle} columns={4}>
-            <Cell width={1} height={2}><AgentPanel/></Cell>
-            <Cell width={1} height={2}><ClientPanel/></Cell>
-            <Cell width={1} height={2}><TicketsPanel/></Cell>
+            <Cell width={3}>
+            {this.props.users && this.props.users.map((user) => (   
+            <MainAgentPanelLayout key={user.id} user={user}></MainAgentPanelLayout>
+            ))}
+            </Cell>
             <Cell width={1} height={2}>
                 <Grid columns={1}>
                     <Cell width={1} height={1}><StatsPanel/></Cell>

@@ -11,11 +11,13 @@ import AgentStats from './SubComponents/AgentStats';
 
 export default class AgentItem extends React.Component {
     render () {
+      console.log(this.props);
       return(
         
+        
         <Grid columns = {2}>
-           <AgentDetails ext={this.props.ext}/>
-           <AgentStats ext={this.props.ext}/>
+           <AgentDetails user={this.props.user}/>
+           <AgentStats user={this.props.user}/>
          </Grid>
     
       ); 
