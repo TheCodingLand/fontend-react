@@ -13,7 +13,8 @@ const fakeUsers = { users :  [
         { id : "1", 
         ext : "ext 1" , 
         prenom : "prenom 1",
-        nom : "nom 1"
+        nom : "nom 1",
+        phone_login : "110"
         }, 
         { id : "2", 
         ext: "ext 2" , 
@@ -43,36 +44,44 @@ const fakeUsers = { users :  [
 class App extends React.Component {
   constructor () {
     super();
-    // this.client = new ApolloClient({
-    //   link: new HttpLink({ uri: 'http://192.168.1.22:8099/graphql' }),
-    //   cache: new InMemoryCache()
-    // });
+     this.client = new ApolloClient({
+       link: new HttpLink({ uri: 'http://192.168.1.22:8099/graphql' }),
+       cache: new InMemoryCache()
+     });
     this.state ={ serverData : {} };
   };
 
-  // handleData(data) {
-  //   let result = JSON.parse(data);
-  //   console.log(result);
-  // }
+   handleData(data) {
+     let result = JSON.parse(data);
+   console.log(result);
+   }
 
      
-  // onDataRecieved (data) {
-  //   console.log(data)
-  //   this.setState(data)
-
-  // } 
-
-  componentDidMount() {
-    setTimeout(() => {
-      this.setState({serverData : fakeUsers}); 
-    }, 5000);
-
-    // this.client.query({ query: gql`{agents{id,lastname, firstname, ext}}` }).then(this.onDataRecieved.bind(this))
-    // setInterval(() => {this.client.cache.reset(),3000; 
+   onDataRecieved (data) {
     
-    // this.client.query({ query: gql`{agents{id,lastname, firstname, ext}}` }).then(this.onDataRecieved.bind(this)) }, 1000 );
-    // <Websocket url='ws://localhost:3001/agents'
-    //           onMessage={this.handleData.bind(this)}/>
+    var listofusers = [];
+    if (data.data.allAgents) { listofusers = data.data.allAgents.edges.map((edge) => { return edge.node })}
+    var users = { users : listofusers }
+    this.setState( { serverData : { users : users.users } })
+   } 
+   
+   
+  componentDidMount() {
+    
+    setTimeout(() => { this.client.query({ query: gql`query {allAgents(phoneState:"available") 
+          { edges { node { login, lastname, firstname, ext}}}}` }).then(this.onDataRecieved.bind(this))})
+          
+    setInterval(() => { this.client.cache.reset(),3000; 
+    this.client.query({ query: gql`query {allAgents(phoneState:"available")
+    { edges { node { id, lastname, firstname, ext}}}}` }).then(this.onDataRecieved.bind(this)) }, 1000 );
+      //this.setState({serverData : fakeUsers}); 
+    //}, 5000);})
+
+    // this.client.query({ query: gql`query {allAgents(phoneState:"available") 
+    // { edges { node { id, lastname, firstname, ext}}}}` }).then(this.onDataRecieved.bind(this)) }, 1000 );
+
+     <Websocket url='ws://localhost:3001/agents'
+     onMessage={this.handleData.bind(this)}/>
   }
 
 
