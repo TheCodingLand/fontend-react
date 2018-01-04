@@ -10,7 +10,7 @@ import {
 
 import mydata from './lux_postcode.topo.json'
 import myData from './data.json';
-
+//try mapboxgl
  //"/path/to/your/topojson-map-file.json or geography object"
 export default class MapPanel extends React.Component {
   render() {
