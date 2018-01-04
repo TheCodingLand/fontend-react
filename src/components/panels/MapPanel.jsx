@@ -1,16 +1,37 @@
 
-import React from "react";
-import logo from '../../logo.svg';
-// let defaultStyle = { 
-//     color : '#fff' 
-//   };
+import * as React from 'react';
+
+import {
+  ComposableMap,
+  ZoomableGroup,
+  Geographies,
+  Geography,
+} from "react-simple-maps"
+
+import mydata from './lux_postcode.topo.json'
+import myData from './data.json';
+
+ //"/path/to/your/topojson-map-file.json or geography object"
 export default class MapPanel extends React.Component {
-    render () {
-      return(
-        <div>
-         <h3>map</h3>
-         <img className="img-responsive" src={logo} alt="logo"/>
-        </div>
-      ); 
-    }
+  render() {
+    return(
+      <div>
+        <ComposableMap>
+          <ZoomableGroup>
+          <Geographies geography= "/public/lux_postcode.topo.json" >
+            {(geographies, projection) => geographies.map(geography => (
+              <Geography
+                key={ geography.id }
+                geography={ geography }
+                projection={ projection }
+                />
+            ))}
+          </Geographies>
+          </ZoomableGroup>
+        </ComposableMap>
+      </div>
+    )
   }
+}
+ 
+

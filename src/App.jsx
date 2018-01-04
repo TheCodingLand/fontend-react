@@ -9,6 +9,7 @@ import { HttpLink } from 'apollo-link-http';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import Websocket from 'react-websocket';
 
+
 const fakeUsers = { users :  [
         { id : "1", 
         ext : "ext 1" , 
@@ -68,12 +69,12 @@ class App extends React.Component {
    
   componentDidMount() {
     
-    setTimeout(() => { this.client.query({ query: gql`query {allAgents(phoneState:"available") 
-          { edges { node { login, lastname, firstname, ext}}}}` }).then(this.onDataRecieved.bind(this))})
+    setTimeout(() => { this.client.query({ query: gql`query {allAgents(phoneState:"ACDAVAIL") 
+          { edges { node { login, lastname, firstname, ext, phoneLogin}}}}` }).then(this.onDataRecieved.bind(this))})
           
     setInterval(() => { this.client.cache.reset(),3000; 
-    this.client.query({ query: gql`query {allAgents(phoneState:"available")
-    { edges { node { id, lastname, firstname, ext}}}}` }).then(this.onDataRecieved.bind(this)) }, 1000 );
+    this.client.query({ query: gql`query {allAgents(phoneState:"ACDAVAIL")
+    { edges { node { id, lastname, firstname, ext, phoneLogin}}}}` }).then(this.onDataRecieved.bind(this)) }, 1000 );
       //this.setState({serverData : fakeUsers}); 
     //}, 5000);})
 
