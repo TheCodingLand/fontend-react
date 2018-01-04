@@ -46,7 +46,7 @@ class App extends React.Component {
   constructor () {
     super();
      this.client = new ApolloClient({
-       link: new HttpLink({ uri: 'http://192.168.1.22:8099/graphql' }),
+       link: new HttpLink({ uri: 'http://148.110.107.15:8099/graphql' }),
        cache: new InMemoryCache()
      });
     this.state ={ serverData : {} };
@@ -69,12 +69,21 @@ class App extends React.Component {
    
   componentDidMount() {
     
-    setTimeout(() => { this.client.query({ query: gql`query {allAgents(phoneState:"ACDAVAIL") 
-          { edges { node { login, lastname, firstname, ext, phoneLogin}}}}` }).then(this.onDataRecieved.bind(this))})
-          
-    setInterval(() => { this.client.cache.reset(),3000; 
-    this.client.query({ query: gql`query {allAgents(phoneState:"ACDAVAIL")
-    { edges { node { id, lastname, firstname, ext, phoneLogin}}}}` }).then(this.onDataRecieved.bind(this)) }, 1000 );
+    setTimeout(() => { this.client.query({ query: gql`query {allAgents(phoneActive:true)
+      { edges { node { id, lastname, firstname, ext, phoneLogin, phoneState, currentCal  { 
+        callType
+        ucid
+        origin
+        destination
+        }}}}}` }).then(this.onDataRecieved.bind(this))})
+                
+    setInterval(() => { this.client.cache.reset(),3000; this.client.query({ query: gql`query {allAgents(phoneActive:true)
+          { edges { node { id, lastname, firstname, ext, phoneLogin, phoneState, currentCall { 
+            callType
+            ucid
+            origin
+          destination
+          }}}}}` }).then(this.onDataRecieved.bind(this))}, 1000 );
       //this.setState({serverData : fakeUsers}); 
     //}, 5000);})
 
