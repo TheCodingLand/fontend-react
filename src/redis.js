@@ -18,7 +18,7 @@ sub2.select(4);
 
 
 //SOCKETIO
-
+var starttime = Date.now();
 var io = require('socket.io')(3002);
 
 io.on('connection', function (socket) {
@@ -33,13 +33,18 @@ sub2.subscribe("agent");
  // Handle receiving messages
 var timeInMs = Date.now();
 var callback = function (channel, data) {
-if (Date.now() - timeInMs >3000 ){
+
+
+if (Date.now() - timeInMs >100 ){
+
 timeInMs = Date.now();
+
 data = "update recieved on " + channel + " " + data
 io.emit('message', {data})
 console.log(data);
 
 }};
+
 
 sub.on('message', callback);
 sub2.on('message', callback);
