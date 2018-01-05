@@ -9,6 +9,8 @@ import { HttpLink } from 'apollo-link-http';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import Websocket from 'react-websocket';
 
+import { socketConnect } from 'socket.io-react';
+import io from 'socket.io-client'; 
 
 const fakeUsers = { users :  [
         { id : "1", 
@@ -49,55 +51,119 @@ class App extends React.Component {
        link: new HttpLink({ uri: 'http://148.110.107.15:8099/graphql' }),
        cache: new InMemoryCache()
      });
+    
     this.state ={ serverData : {} };
+    let SOCKET_URL = "localhost:3002"
+    this.socket = io.connect(SOCKET_URL);
+    
+    console.log(this.socket)
   };
+
+
 
    handleData(data) {
      let result = JSON.parse(data);
    console.log(result);
    }
 
+
+ 
+   
+
+  
+
      
    onDataRecieved (data) {
-    
+
     var listofusers = [];
     if (data.data.allAgents) { listofusers = data.data.allAgents.edges.map((edge) => { return edge.node })}
     var users = { users : listofusers }
     this.setState( { serverData : { users : users.users } })
    } 
-   
+  
+   updateData () { 
+
+    console.log("updating data")
+
+
+    // setInterval(() => { this.client.cache.reset(),3000; this.client.query({ query: gql`query {allAgents(phoneActive:true)
+    //   { edges { node { id, lastname, firstname, ext, phoneLogin, phoneState, currentCall { 
+    //    callType
+    //   ucid
+    //    origin
+    // destination
+    //  }}}}}` }).then(this.onDataRecieved.bind(this))}, 1000 );
+
+
+    this.client.cache.reset(); 
+    this.client.query({ query: gql`query {
+      allAgents(phoneActive: true) {
+        edges {
+          node {
+            id
+            lastname
+            firstname
+            ext
+            phoneLogin
+            phoneState
+            currentCall {
+              callType
+              ucid
+              origin
+              destination
+            }
+          }
+        }
+      }
+    }
+    ` }).then(this.onDataRecieved.bind(this))
+   }
    
   componentDidMount() {
     
-    setTimeout(() => { this.client.query({ query: gql`query {allAgents(phoneActive:true)
-      { edges { node { id, lastname, firstname, ext, phoneLogin, phoneState, currentCal  { 
-        callType
-        ucid
-        origin
-        destination
-        }}}}}` }).then(this.onDataRecieved.bind(this))})
+    this.socket.on('message', this.updateData.bind(this));
+    this.updateData ( ()  => {this.updateData})
+
+
+    
+    
+    //  setTimeout(() => { this.client.query({ query: gql`query {
+    //   allAgents(phoneActive: true) {
+    //     edges {
+    //       node {
+    //         id
+    //         lastname
+    //         firstname
+    //         ext
+    //         phoneLogin
+    //         phoneState
+    //         currentCall {
+    //           callType
+    //           ucid
+    //           origin
+    //           destination
+    //         }
+    //       }
+    //     }
+    //   }
+    // }
+    // ` }).then(this.onDataRecieved.bind(this))})
                 
-    setInterval(() => { this.client.cache.reset(),3000; this.client.query({ query: gql`query {allAgents(phoneActive:true)
-          { edges { node { id, lastname, firstname, ext, phoneLogin, phoneState, currentCall { 
-            callType
-            ucid
-            origin
-          destination
-          }}}}}` }).then(this.onDataRecieved.bind(this))}, 1000 );
-      //this.setState({serverData : fakeUsers}); 
-    //}, 5000);})
+    
 
-    // this.client.query({ query: gql`query {allAgents(phoneState:"available") 
-    // { edges { node { id, lastname, firstname, ext}}}}` }).then(this.onDataRecieved.bind(this)) }, 1000 );
-
-     <Websocket url='ws://localhost:3001/agents'
-     onMessage={this.handleData.bind(this)}/>
+   
   }
-
+  
+  
 
   render() {
     return(
-      this.state.serverData.users ? <MainLayout users={this.state.serverData.users}/> : <div><h1>loading</h1></div>
+      <div>
+     
+      <MainLayout users={this.state.serverData.users}/> 
+      
+      </div>
+    
      )
   }
     

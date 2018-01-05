@@ -15,7 +15,7 @@ export default class AgentItem extends React.Component {
       return(
         
         
-        <Grid columns = {2}>
+        <Grid alignContent="stretch" columns = {2} >
            <AgentDetails user={this.props.user}/>
            <AgentStats user={this.props.user}/>
          </Grid>

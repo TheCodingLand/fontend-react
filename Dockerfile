@@ -13,6 +13,7 @@ WORKDIR /usr/src/app
 COPY package.json /usr/src/app/
 RUN npm install
 
+
 # copy app source to destination container
 COPY . /usr/src/app/
 
