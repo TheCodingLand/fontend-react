@@ -44,7 +44,7 @@ avatar={ <Avatar style={{color: '#fff', backgroundColor : primaryColor}} aria-la
       //let phonecolor = this.props.user.phoneState === "ACDAVAIL" ? red[500] : green[500];
       let phonecolor = this.props.user.currentCall ? red[500] : green[500];
       
-      console.log(this.props.user.phoneState);
+      
       return(this.props.user ?
       <div><Card style={{ flex: 'auto', height: "90px" }}> {hr}</Card></div>  :
       <Typography>loading Agent</Typography>

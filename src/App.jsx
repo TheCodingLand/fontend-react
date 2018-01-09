@@ -22,6 +22,7 @@ class App extends React.Component {
     this.state ={ serverData : {} };
     let SOCKET_URL = "localhost:3002"
     this.socket = io.connect(SOCKET_URL);
+    this.lastUpdate = Date.now();
     
     console.log(this.socket)
   };
@@ -41,8 +42,8 @@ class App extends React.Component {
    } 
   
    updateData (data) { 
-    console.log("updating data")
-    console.log(data)
+     
+    if (Date.now()- this.lastUpdate > 300){
 
     this.client.cache.reset(); 
     this.client.query({ query: gql`query {
@@ -67,13 +68,16 @@ class App extends React.Component {
     }
     ` }).then(this.onDataRecieved.bind(this))
    }
-   
+  
+  }
+
   componentDidMount() {
     //first query to refresh
+    
     this.updateData();
     this.socket.on('message',((data) =>  { this.updateData(data)})  );
     
-
+    
   }
 
 

@@ -16,17 +16,13 @@ var letterStyle = {
 
 export default class MainLayout extends React.Component {
     render() { 
-        
+
         return(
         <Grid style={letterStyle} columns={4}>
             <Cell width={3}>
-            <CSSTransitionGroup transitionName="example"
-                        transitionEnterTimeout={2500}
-                        transitionLeaveTimeout={2500}>
-            {this.props.users && this.props.users.map((user) => (   
-            <MainAgentPanelLayout key={user.ext} user={user}></MainAgentPanelLayout>
-            ))}
-            </CSSTransitionGroup>
+                <CSSTransitionGroup transitionName="example" transitionEnterTimeout={2500} transitionLeaveTimeout={2500}>
+                    {this.props.users && this.props.users.map((user) => ( <MainAgentPanelLayout key={user.ext} user={user}></MainAgentPanelLayout>))}
+                </CSSTransitionGroup>
             </Cell>
             <Cell width={1} height={2}>
                 <Grid columns={1}>

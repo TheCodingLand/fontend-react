@@ -35,7 +35,7 @@ class AgentStats extends React.Component {
       //let phonecolor = this.props.user.phoneState === "ACDAVAIL" ? red[500] : green[500];
       let phonecolor = this.props.user.currentCall ? red[500] : green[500];
       
-      console.log(this.props.user.phoneState);
+      
       return(this.props.user ?
       <div><Card style={{ overflowX: 'hidden', flex: 'auto', height: "90px", width:"100%" }}> 
       {user_icon}
