@@ -1,5 +1,4 @@
 import * as React from 'react';
-
 import MainLayout from './components/MainLayout'
 //import styled from "styled-components";
 import { graphql } from 'react-apollo'
@@ -8,10 +7,9 @@ import { ApolloClient } from 'apollo-client';
 import { HttpLink } from 'apollo-link-http';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import Websocket from 'react-websocket';
-
 import { socketConnect } from 'socket.io-react';
 import io from 'socket.io-client';
-
+import Reboot from 'material-ui/Reboot';
 
 class App extends React.Component {
   constructor () {
@@ -74,46 +72,16 @@ class App extends React.Component {
     //first query to refresh
     this.updateData();
     this.socket.on('message',((data) =>  { this.updateData(data)})  );
-
-    //this.updateData ( ()  => {this.updateData})
     
 
   }
-  
-  
 
-    
-    
-    //  setTimeout(() => { this.client.query({ query: gql`query {
-    //   allAgents(phoneActive: true) {
-    //     edges {
-    //       node {
-    //         id
-    //         lastname
-    //         firstname
-    //         ext
-    //         phoneLogin
-    //         phoneState
-    //         currentCall {
-    //           callType
-    //           ucid
-    //           origin
-    //           destination
-    //         }
-    //       }
-    //     }
-    //   }
-    // }
-    // ` }).then(this.onDataRecieved.bind(this))})
-                
-    
 
-   
 
   render() {
     return(
       <div>
-     
+     <Reboot />
       <MainLayout users={this.state.serverData.users}/> 
       
       </div>
