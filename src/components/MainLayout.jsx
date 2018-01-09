@@ -19,7 +19,7 @@ export default class Layout extends React.Component {
         <Grid style={letterStyle} columns={4}>
             <Cell width={3}>
             {this.props.users && this.props.users.map((user) => (   
-            <MainAgentPanelLayout key={user.id} user={user}></MainAgentPanelLayout>
+            <MainAgentPanelLayout key={user.ext} user={user}></MainAgentPanelLayout>
             ))}
             </Cell>
             <Cell width={1} height={2}>

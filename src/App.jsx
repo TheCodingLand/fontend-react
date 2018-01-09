@@ -10,38 +10,7 @@ import { InMemoryCache } from 'apollo-cache-inmemory';
 import Websocket from 'react-websocket';
 
 import { socketConnect } from 'socket.io-react';
-import io from 'socket.io-client'; 
-
-const fakeUsers = { users :  [
-        { id : "1", 
-        ext : "ext 1" , 
-        prenom : "prenom 1",
-        nom : "nom 1",
-        phone_login : "110"
-        }, 
-        { id : "2", 
-        ext: "ext 2" , 
-        prenom : "prenom 2",
-        nom : "nom2"
-        },  
-        { id : "3", 
-        ext: "ext 3" , 
-        prenom : "prenom 3",
-        nom : "nom 3"
-        },  
-        { id : "4", 
-        ext: "ext 4" , 
-        prenom : "prenom 4",
-        nom : "nom 4"
-        },  
-        { id : "5", 
-        ext: "ext 5" , 
-        prenom : "prenom 5",
-        nom : "nom 5"
-        },
-        ]}
-  
-
+import io from 'socket.io-client';
 
 
 class App extends React.Component {
@@ -60,19 +29,11 @@ class App extends React.Component {
   };
 
 
-
    handleData(data) {
      let result = JSON.parse(data);
    console.log(result);
    }
 
-
- 
-   
-
-  
-
-     
    onDataRecieved (data) {
 
     var listofusers = [];
@@ -81,19 +42,9 @@ class App extends React.Component {
     this.setState( { serverData : { users : users.users } })
    } 
   
-   updateData () { 
-
+   updateData (data) { 
     console.log("updating data")
-
-
-    // setInterval(() => { this.client.cache.reset(),3000; this.client.query({ query: gql`query {allAgents(phoneActive:true)
-    //   { edges { node { id, lastname, firstname, ext, phoneLogin, phoneState, currentCall { 
-    //    callType
-    //   ucid
-    //    origin
-    // destination
-    //  }}}}}` }).then(this.onDataRecieved.bind(this))}, 1000 );
-
+    console.log(data)
 
     this.client.cache.reset(); 
     this.client.query({ query: gql`query {
@@ -120,10 +71,16 @@ class App extends React.Component {
    }
    
   componentDidMount() {
-    
-    this.socket.on('message', this.updateData.bind(this));
-    this.updateData ( ()  => {this.updateData})
+    //first query to refresh
+    this.updateData();
+    this.socket.on('message',((data) =>  { this.updateData(data)})  );
 
+    //this.updateData ( ()  => {this.updateData})
+    
+
+  }
+  
+  
 
     
     
@@ -152,9 +109,6 @@ class App extends React.Component {
     
 
    
-  }
-  
-  
 
   render() {
     return(
