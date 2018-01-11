@@ -9,7 +9,7 @@ import "./MainLayout.css"
 var letterStyle = {
     padding: 10,
     margin: 10,
-    fontFamily: "Railway",
+    fontFamily: "Roboto",
     fontSize: 14,
     textAlign: "center"
   };
@@ -19,6 +19,7 @@ export default class MainLayout extends React.Component {
 
         return(
         <Grid style={letterStyle} columns={4}>
+            
             <Cell width={3}>
                 <CSSTransitionGroup transitionName="example" transitionEnterTimeout={2500} transitionLeaveTimeout={2500}>
                     {this.props.users && this.props.users.map((user) => ( <MainAgentPanelLayout key={user.ext} user={user}></MainAgentPanelLayout>))}
