@@ -14,14 +14,14 @@ class App extends React.Component {
     super();
     const store = new AgentListModel();
     store.GetAgentList()
-    
+
   }
 
 render() {
     return(
       <div>
      <Reboot />
-     
+      {this.store.agents} ? <h1>{this.store.agents}</h1> :<h1> Loading</h1>
       </div>
     
      )

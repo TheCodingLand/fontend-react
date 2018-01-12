@@ -5,8 +5,9 @@ import AgentModel from "./AgentModel";
 
 export default class AgentListModel {
   constructor() {
-    this.agents = this.GetAgentList()
     this.ds = new DataProvider();  
+    this.GetAgentList()
+      
  }
 
 
@@ -21,17 +22,26 @@ export default class AgentListModel {
 
   @action
   addAgent(agent) {
+    console.log(agent)
     this.agents.push(new AgentModel(agent.login, agent.firstname))
   }
 
   @action
   async GetAgentList() {
     
-    return await this.ds.ListAgents()
+    //this.ds.ListAgents().then((data) => console.log(data))    
+    this.ds.ListAgents().then((data) => this.onDataRecieved(data))
+  }
+
+  onDataRecieved(data) {
+    var listofusers = [];
+    if (data.data.allAgents) { listofusers = data.data.allAgents.edges.map((edge) => { return edge.node })}
+    var users = { users : listofusers }
     
-  
-    
-    
+    listofusers.map((user) => this.addAgent(user))
+
+
+    //this.setState( { serverData : { users : users.users } }
   }
 
 }
