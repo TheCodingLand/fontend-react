@@ -26,7 +26,7 @@ export default class MainLayout extends React.Component {
             
             <Cell width={3}>
                 <CSSTransitionGroup transitionName="example" transitionEnterTimeout={2500} transitionLeaveTimeout={2500}>
-                    {this.props.store.agents && this.props.store.agents.map((user) => ( <MainAgentPanelLayout key={user.ext} user={user}></MainAgentPanelLayout>))}
+                    {this.props.store.agentStore.agents && this.props.store.agentStore.agents.map((user) => ( <MainAgentPanelLayout key={user.phoneLogin} user={user}></MainAgentPanelLayout>))}
                 </CSSTransitionGroup>
             </Cell>
             <Cell width={1} height={2}>

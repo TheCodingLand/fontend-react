@@ -29,19 +29,27 @@ async ListAgents() {
     this.client.cache.reset(); 
     
     let data = await this.client.query({ query: gql`query {
-          allAgents(phoneActive: true) {
-            edges {
-              node {
-                id
-                lastname
-                firstname
-                ext
-                phoneLogin
-                phoneState
-              }
+      allAgents(phoneActive: true) {
+        edges {
+          node {
+            id
+            lastname
+            firstname
+            ext
+            phoneLogin
+            phoneState
+            currentCall{
+              ucid
+              origin
+              start
+              destination
+              callType 
+            }
             }
           }
         }
+      }
+    
         ` })
         return data
        }
@@ -55,7 +63,7 @@ async GetAgent(login) {
     this.client.cache.reset(); 
     
     let data = await this.client.query({ query: gql`query {
-          allAgents(phoneLogin: ${login}) {
+          allAgents(phoneLogin: "${login}") {
             edges {
               node {
                 id
@@ -71,4 +79,27 @@ async GetAgent(login) {
         ` })
         return data
        }
+
+  async GetCall(ucid) {
+   
+        console.log("retrieving agents from server")
+        this.client.cache.reset(); 
+        
+        let data = await this.client.query({ query: gql`query {
+              allCalls(ucid: "${ucid}") {
+                edges {
+                  node {
+                    ucid
+                    origin
+                    start
+                    destination
+                    callType
+                  }
+                }
+              }
+            }
+            ` })
+            return data
+           }
+
 }
