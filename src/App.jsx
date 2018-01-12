@@ -3,6 +3,9 @@ import * as React from 'react';
 import Reboot from 'material-ui/Reboot';
 import AgentListModel from "./models/AgentListModel";
 import AgentModel from "./models/AgentModel";
+import Agent from './Agent';
+import AgentList from './AgentList';
+import MainLayout from './components/MainLayout'
 //<MainLayout users={this.state.serverData.users}/> 
 
 
@@ -12,8 +15,8 @@ import AgentModel from "./models/AgentModel";
 class App extends React.Component {
   constructor() {
     super();
-    const store = new AgentListModel();
-    store.GetAgentList()
+    this.store = new AgentListModel();
+    this.store.GetAgentList()
 
   }
 
@@ -21,7 +24,8 @@ render() {
     return(
       <div>
      <Reboot />
-      {this.store.agents} ? <h1>{this.store.agents}</h1> :<h1> Loading</h1>
+      
+      <MainLayout store={this.store}/> 
       </div>
     
      )
@@ -30,6 +34,6 @@ render() {
   
 }
 
-
+//<AgentList store={this.store} />
 
 export default App;

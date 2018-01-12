@@ -6,8 +6,13 @@ export default class AgentModel {
   @observable firstname;
 
 
-  constructor(login,firstname) {
-    this.firstname = firstname;
-    this.login = login;
+  constructor(agent) {
+
+    this.firstname = agent.firstname;
+    this.lastname = agent.lastname;
+    this.phoneLogin = agent.phoneLogin;
+    this.ext = agent.ext;
+    this.phoneState = agent.phoneState;
+
   }
 }
