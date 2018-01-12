@@ -21,8 +21,6 @@ export default class DataProvider {
    
     }
 
-
-
 async ListAgents() {
    
     console.log("retrieving agents from server")
@@ -56,7 +54,6 @@ async ListAgents() {
 
 
 
-
 async GetAgent(login) {
    
     console.log("retrieving agents from server")
@@ -81,7 +78,6 @@ async GetAgent(login) {
        }
 
   async GetCall(ucid) {
-   
         console.log("retrieving agents from server")
         this.client.cache.reset(); 
         

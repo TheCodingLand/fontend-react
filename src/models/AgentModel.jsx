@@ -28,8 +28,6 @@ export default class AgentModel {
   @action
   updateState(state) {
     this.phoneState = state;
-
-    
   }
 
   @action
