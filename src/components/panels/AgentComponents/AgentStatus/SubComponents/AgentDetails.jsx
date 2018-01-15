@@ -41,6 +41,7 @@ class AgentDetails extends React.Component {
 
 
       if (this.props.user) { 
+        if (this.props.user.firstname) {
        hr = <CardHeader
       avatar={ <Avatar style={{color: '#fff', backgroundColor : primaryColor}} aria-label="firstname">{this.props.user.firstname.charAt(0)}</Avatar>}
 
@@ -48,7 +49,7 @@ class AgentDetails extends React.Component {
       subheader={this.props.user.lastname}
 />
       }
-
+    }
 
       //let phonecolor = this.props.user.phoneState === "ACDAVAIL" ? red[500] : green[500];
       let phonecolor = this.props.user.currentCall ? red[500] : green[500];
