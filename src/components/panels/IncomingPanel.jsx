@@ -3,61 +3,56 @@ import * as React from 'react';
 import Typography from 'material-ui/Typography';
 import Stepper, { Step, StepLabel } from 'material-ui/Stepper';
 import Grid from 'material-ui/Grid';
+import { observer } from "mobx-react";
+
 // let defaultStyle = { 
 //     color : '#fff' 
 //   };
 function getSteps() {
-    return ['Call in Centrale', 'Client Waiting'];
+    return ['inactive', 'client in line'];
   }
 
+  let activestep= 2
+@observer
 export default class IncomingPanel extends React.Component {
-    state = {
-        activeStep: -1,
-      };
-
-     
+   
 
     render () {
-    const { classes } = this.props;
-    const steps = getSteps();
-    const { activeStep } = this.state;
-      return(
-        <div><Grid container spacing={24}>
-        <Grid item xs>
-        <Stepper activeStep={activeStep} alternativeLabel>
-          {steps.map(label => {
-            return (
-              <Step key={label}>
-                <StepLabel>{label}</StepLabel>
-              </Step>
-            );
-          })}
-        </Stepper>
-        </Grid>
-        <Grid item xs>
-        <Stepper activeStep={activeStep} alternativeLabel>
-          {steps.map(label => {
-            return (
-              <Step key={label}>
-                <StepLabel>{label}</StepLabel>
-              </Step>
-            );
-          })}
-        </Stepper>
-        </Grid>
-        <Grid item xs>
-        <Stepper activeStep={activeStep} alternativeLabel>
-          {steps.map(label => {
-            return (
-              <Step key={label}>
-                <StepLabel>{label}</StepLabel>
-              </Step>
-            );
-          })}
-        </Stepper>
-        </Grid>
-      </Grid>
+  
+        function GetStepper(queue){
+          console.log(queue.queue)
+          activestep =0
+          if (queue.queue.currentCall){
+
+          if (queue.queue.currentCall.ucid){
+            activestep = 1
+          
+          }}
+
+      return (<Stepper activeStep = {activestep} alternativeLabel>
+      {getSteps().map(label => {
+        return (
+          <Step key={label}>
+            <StepLabel>{queue.queue.ext} : {label}</StepLabel>
+          </Step>
+        );
+      })} 
+    </Stepper>)
+
+    }
+
+      return(<div><Grid container spacing={24}>
         
+        { this.props.queues && this.props.queues.map((queue) => { return (
+          <Grid item xs>
+         
+          <GetStepper queue={queue} />
+        </Grid>        
+        )})}
+
+        
+        
+      </Grid>
         </div>
       ); 
     }
