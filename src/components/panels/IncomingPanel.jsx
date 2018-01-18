@@ -26,6 +26,10 @@ export default class IncomingPanel extends React.Component {
 
           if (queue.queue.currentCall.ucid){
             activestep = 1
+
+
+
+
           
           }}
 
@@ -45,13 +49,8 @@ export default class IncomingPanel extends React.Component {
         
         { this.props.queues && this.props.queues.map((queue) => { return (
           <Grid item xs>
-         
           <GetStepper queue={queue} />
-        </Grid>        
-        )})}
-
-        
-        
+        </Grid>)})}
       </Grid>
         </div>
       ); 
