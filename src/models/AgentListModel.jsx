@@ -61,7 +61,11 @@ export default class AgentListModel {
           this.GetQueuesUpdates()
           console.log("updating queue")
         }
-      
+        if (data.action === "calltype" ) {
+          this.GetQueuesUpdates()
+          console.log("updating queue")
+        }
+       
       
       }
     
