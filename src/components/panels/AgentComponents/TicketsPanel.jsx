@@ -40,14 +40,14 @@ class TicketsPanel extends React.Component {
       }
       else {
         return (<div><Card style={{ overflowX: 'hidden', flex: 'auto', height: "90px", width: "100%" }}>
-          <Typography>your current stats :</Typography><p></p><Badge badgeContent={4} color="accent"><MailIcon style={{ width: 10, height: 10 }} /></Badge>
+          <Typography>your current stats :</Typography><p></p><Badge badgeContent={this.props.user.totalcalls} color="accent"><MailIcon style={{ width: 10, height: 10 }} /></Badge>
         </Card></div>)
       }
     }
 
     else {
       return (<div><Card style={{ overflowX: 'hidden', flex: 'auto', height: "90px", width: "100%" }}>
-        <Typography>your current stats :</Typography><p></p><Badge badgeContent={4} color="accent"><MailIcon style={{ width: 10, height: 10 }} /></Badge>
+        <Typography>your current stats :</Typography><p></p><Badge badgeContent={this.props.user.totalcalls} color="accent"><MailIcon style={{ width: 10, height: 10 }} /></Badge>
 
 
       </Card></div>)
