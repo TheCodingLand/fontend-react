@@ -5,7 +5,7 @@ import { withStyles } from '@material-ui/core/styles';
 import MenuItem from '@material-ui/core/MenuItem';
 import TextField from '@material-ui/core/TextField';
 import { observer } from "mobx-react";
-
+import Button from '@material-ui/core/Button';
 import FormControl from '@material-ui/core/FormControl';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import Select from '@material-ui/core/Select';
@@ -116,7 +116,7 @@ class TicketForm extends React.Component {
               margin="normal"
             />
             
-             
+            <Button> Valider</Button> 
             </form>
   </div>            
     )

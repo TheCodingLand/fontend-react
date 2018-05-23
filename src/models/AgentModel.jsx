@@ -24,9 +24,8 @@ export default class AgentModel {
     this.totalcalls = "";
     this.currentCall = { ucid: "", origin: "", start: "", destination: "", callType: "", tickets: [] }
     this.totalcalls = this.getTotalCalls()
-    this.callsWithoutTickets = []
-  
-    this.currentUser= this.isCurrentuser
+    this.callsWithoutTickets = this.getCallsWithoutTickets()
+    this.currentUser = this.isCurrentUser
 
     
    
@@ -109,8 +108,9 @@ this.callsWithoutTickets = events
 
   @action
   getCallsWithoutTickets() {
-    
+    console.log("got calls without tickets")
     this.ds.getEventsbyAgentExt(this.ext).then((data) => { this.onCallsWithoutTicketsRecieved(data)
+    
   
 })
 }

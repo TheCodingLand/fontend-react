@@ -16,7 +16,7 @@ export default class RootStore {
     this.callsStore = new CallsListModel(this)
 
     this.socket = io.connect(SOCKET_URL);
-    this.socket.on('message',((data) =>  { this.handleRedisMessage(data)})  );
+    this.socket.on('message',((data) =>  { this.handleRedisMessage(data)}));
     
     }
     
