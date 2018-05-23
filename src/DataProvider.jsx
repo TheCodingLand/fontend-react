@@ -187,8 +187,37 @@ node{
     }`
     })
     return data
-  }
+  } 
 
-  
+  async getEventsbyAgentExt(phone) {
+    this.client.cache.reset();
+    let datestart = new Date(Date.now()).toISOString()
+
+    let start = datestart.slice(0,10)
+    let data = await this.client.query({
+      query: gql`query {  
+          allCalls(start_Gte:"${start}",destination:"${phone}") {
+            edges {
+              node {
+                ucid
+                start
+                event {
+                  edges {
+                    node {
+                      otId
+                      ticket {
+                        otId
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+        `
+    })
+    return data
+  }
 }
 

@@ -1,6 +1,6 @@
 import * as React from 'react';
 //import AgentList from "./components/TodoList";
-import Reboot from 'material-ui/Reboot';
+import CssBaseline from 'material-ui/CssBaseline';
 import RootStore from "./models/RootStore";
 import MainLayout from './components/MainLayout'
 //<MainLayout users={this.state.serverData.users}/> 
@@ -22,7 +22,7 @@ render() {
     return(
       <div>
        
-     <Reboot />
+     <CssBaseline  />
      
       
       <MainLayout store={this.store}/> 

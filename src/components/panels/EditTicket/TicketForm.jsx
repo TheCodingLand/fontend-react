@@ -4,10 +4,11 @@ import React from 'react';
 import { withStyles } from 'material-ui/styles';
 import MenuItem from 'material-ui/Menu/MenuItem';
 import TextField from 'material-ui/TextField';
-
+import { observer } from "mobx-react";
 import { FormControl, FormHelperText } from 'material-ui/Form';
 import Select from 'material-ui/Select';
 import Input, { InputLabel } from 'material-ui/Input';
+
 const styles = theme => ({
     container: {
       display: 'flex',
@@ -24,10 +25,20 @@ const styles = theme => ({
   });
 
 
-
+@observer
 class TicketForm extends React.Component {
     state = {
-        name: 'Cat in the Hat',
+        event: '',
+        client: '',
+             
+    }
+    getEvents() {
+      
+      console.log(this.props.agent)
+      return this.props.agent.callsWithoutTickets.map((data) => {
+        return <MenuItem value={data.id}>{data.start}</MenuItem>
+      })
+
     }
     handleChange = name => event => {
         this.setState({
@@ -35,6 +46,7 @@ class TicketForm extends React.Component {
         });
       };
     render() {
+      const menuitems = this.getEvents()
         const { classes } = this.props;
     
         return (<div>
@@ -44,16 +56,12 @@ class TicketForm extends React.Component {
           <InputLabel htmlFor="event">Event</InputLabel>
         
             <Select
-            value=""
-            onChange={this.handleChange}
-            input={<Input name="name" id="event" />}
+            value={this.state.event}
+
+            onChange={this.handleChange('event')}
+            
           >
-            <MenuItem value="">
-              <em>None</em>
-            </MenuItem>
-            <MenuItem value="hai">Hai</MenuItem>
-            <MenuItem value="olivier">Olivier</MenuItem>
-            <MenuItem value="kevin">Kevin</MenuItem>
+            {menuitems}
           </Select>
           <FormHelperText>Select your Event</FormHelperText>
         </FormControl>
@@ -70,9 +78,7 @@ class TicketForm extends React.Component {
             <MenuItem value="">
               <em>None</em>
             </MenuItem>
-            <MenuItem value="hai">Hai</MenuItem>
-            <MenuItem value="olivier">Olivier</MenuItem>
-            <MenuItem value="kevin">Kevin</MenuItem>
+           {menuitems}
           </Select>
           <FormHelperText>Select Client</FormHelperText>
         </FormControl>

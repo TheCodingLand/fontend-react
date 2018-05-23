@@ -9,7 +9,7 @@ export default class RootStore {
     constructor() {
     this.lastUpdate = Date.now(); 
     this.lastRedisUpdate = {}
-    let SOCKET_URL = "148.110.107.15:3001"
+    let SOCKET_URL = "ws.lbr.lu"
     this.ds = new DataProvider();  
 
     this.agentStore = new AgentListModel(this)
@@ -19,7 +19,7 @@ export default class RootStore {
     this.socket.on('message',((data) =>  { this.handleRedisMessage(data)})  );
     
     }
-
+    
     handleRedisMessage(data){
         data = data.pl.replace('\\"', '"')
         data = JSON.parse(data)
