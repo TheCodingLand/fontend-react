@@ -1,11 +1,14 @@
 
 import * as React from 'react';
-import Typography from 'material-ui/Typography';
-import Card from 'material-ui/Card';
-import Stepper, { Step, StepLabel } from 'material-ui/Stepper';
-import Grid from 'material-ui/Grid';
+import Typography from '@material-ui/core/Typography';
+import Card from '@material-ui/core/Card';
+//import Stepper, { Step, StepLabel } from 'material-ui/Stepper';
+import Stepper from '@material-ui/core/Stepper';
+import Step from '@material-ui/core/Step';
+import StepLabel from '@material-ui/core/StepLabel';
+import Grid from '@material-ui/core/Grid';
 import { observer } from "mobx-react";
-import CardHeader from 'material-ui/Card/CardHeader';
+import CardHeader from '@material-ui/core/CardHeader';
 import TicketDrawer from './EditTicket/TicketDrawer';
 
 

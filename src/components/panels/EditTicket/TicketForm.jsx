@@ -1,13 +1,16 @@
 
 import React from 'react';
 
-import { withStyles } from 'material-ui/styles';
-import MenuItem from 'material-ui/Menu/MenuItem';
-import TextField from 'material-ui/TextField';
+import { withStyles } from '@material-ui/core/styles';
+import MenuItem from '@material-ui/core/MenuItem';
+import TextField from '@material-ui/core/TextField';
 import { observer } from "mobx-react";
-import { FormControl, FormHelperText } from 'material-ui/Form';
-import Select from 'material-ui/Select';
-import Input, { InputLabel } from 'material-ui/Input';
+
+import FormControl from '@material-ui/core/FormControl';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import Select from '@material-ui/core/Select';
+import Input from '@material-ui/core/Input';
+import InputLabel from '@material-ui/core/InputLabel';
 
 const styles = theme => ({
     container: {
