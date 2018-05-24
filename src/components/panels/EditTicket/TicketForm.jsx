@@ -33,23 +33,41 @@ class TicketForm extends React.Component {
     state = {
         event: '',
         client: '',
+        events: [],
+        selectedEvent: {}
+     
              
     }
     getEvents() {
       
       console.log(this.props.agent)
-      return this.props.agent.callsWithoutTickets.map((data) => {
-        return <MenuItem value={data.id}>{data.start}</MenuItem>
-      })
-
+     
+      this.setState({events : this.props.agent.callsWithoutTickets})
+      console.log(this.state)
+      }
+      
+    componentDidMount(){
+      this.getEvents()
     }
+    
+
+    
     handleChange = name => event => {
         this.setState({
           [name]: event.target.value,
         });
+        this.state.events.forEach((e) => {
+          if (e.id ==event.target.value) {
+            console.log(e)
+            this.setState({selectedEvent:e})
+            }
+          })
+        
+        
       };
     render() {
-      const menuitems = this.getEvents()
+      
+      const menuitems = this.state.events.map((event) => <MenuItem origin={event.origin} value={event.id}>{event.start}</MenuItem> )
         const { classes } = this.props;
     
         return (<div>
@@ -69,23 +87,20 @@ class TicketForm extends React.Component {
           <FormHelperText>Select your Event</FormHelperText>
         </FormControl>
         </p>
-        <p>
-          <FormControl className={classes.formControl}>
-          <InputLabel htmlFor="client">Client</InputLabel>
         
-            <Select
-            value=""
-            onChange={this.handleChange}
-            input={<Input name="name" id="client" />}
-          >
-            <MenuItem value="">
-              <em>None</em>
-            </MenuItem>
-           {menuitems}
-          </Select>
-          <FormHelperText>Select Client</FormHelperText>
-        </FormControl>
-        </p>
+        <TextField
+              id="origin"
+              label="call origin"
+              className={classes.textField}
+              margin="normal"
+              value={this.state.selectedEvent.origin}
+            />
+        <TextField
+              id="client"
+              label="Client info"
+              className={classes.textField}
+              margin="normal"
+            />
             <TextField
               id="title"
               label="Title"
@@ -107,6 +122,8 @@ class TicketForm extends React.Component {
               label="Description"
               className={classes.textField}
               margin="normal"
+              multiline
+              rows="4"
             />
             <TextField
               multiline
@@ -114,9 +131,11 @@ class TicketForm extends React.Component {
               label="Solution"
               className={classes.textField}
               margin="normal"
+              multiline
+              rows="4"
             />
             
-            <Button> Valider</Button> 
+            <Button onclick>Valider</Button> 
             </form>
   </div>            
     )

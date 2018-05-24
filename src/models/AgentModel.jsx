@@ -95,7 +95,7 @@ onCallListRecieved(data) {
 onCallsWithoutTicketsRecieved(data){
   let events= []
   events= data.data.allCalls.edges.map((data) => { if (!data.node.event.edges.node){
-  let event=  {'id':data.node.ucid, 'start':data.node.start}
+  let event=  {'id':data.node.ucid, 'start':data.node.start, 'origin':data.node.origin}
   console.log(event)
  return event
 }

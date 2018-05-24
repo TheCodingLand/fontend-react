@@ -24,7 +24,7 @@ export default class RootStore {
         data = data.pl.replace('\\"', '"')
         data = JSON.parse(data)
         if (data.action === this.lastRedisUpdate.action && data.data === this.lastRedisUpdate.data) {
-            if (Date.now() - this.lastUpdate > 2000) {
+            if (Date.now() - this.lastUpdate > 4000) {
                 
                 this.agentStore.handleMessage(data)
                 this.lastUpdate = Date.now()
