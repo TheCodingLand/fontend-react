@@ -1,17 +1,22 @@
 
 import * as React from 'react';
-import Typography from 'material-ui/Typography';
-import PhoneInTalk from 'material-ui-icons/PhoneInTalk';
-import Phone from 'material-ui-icons/Phone';
-import { red, green, deepOrange } from 'material-ui/colors';
-import Divider from 'material-ui/Divider/Divider';
-import AccountBox from 'material-ui-icons/AccountBox';
-import { withTheme } from 'material-ui/styles';
-import Card from 'material-ui/Card'
-import yellow from 'material-ui/colors/yellow';
+import Typography from '@material-ui/core/Typography';
+import PhoneInTalk from '@material-ui/icons/PhoneInTalk';
+import Phone from '@material-ui/icons/Phone';
+
+import red from '@material-ui/core/colors/red';
+import green from '@material-ui/core/colors/green';
+import deepOrange from '@material-ui/core/colors/deepOrange';
+
+import Divider from '@material-ui/core/Divider';
+import AccountBox from '@material-ui/icons/AccountBox';
+import { withTheme } from '@material-ui/core/styles';
+import Card from '@material-ui/core/Card'
+
+import yellow from '@material-ui/core/colors/yellow';
 import { observer } from "mobx-react";
-import Tooltip from 'material-ui/Tooltip';
-import cyan from 'material-ui/colors/cyan';
+import Tooltip from '@material-ui/core/Tooltip';
+import cyan from '@material-ui/core/colors/cyan';
 @observer
 class AgentStats extends React.Component {
 

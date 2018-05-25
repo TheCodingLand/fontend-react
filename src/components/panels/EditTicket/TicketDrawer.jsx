@@ -4,8 +4,8 @@ import Drawer from '@material-ui/core/Drawer';
 import TicketForm from './TicketForm';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from 'material-ui-icons/Menu';
-import ExpandMoreIcon from 'material-ui-icons/ExpandMore';
+import MenuIcon from '@material-ui/icons/Menu';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { withStyles } from '@material-ui/core/styles';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -33,6 +33,9 @@ state ={
 }
 handleChange = event => {
   this.setState({ [event.target.name]: event.target.value });
+  this.props.agents.forEach(agent => { if (agent.ext === event.target.value) { return agent }
+    
+  });
   
 };
 
@@ -42,7 +45,7 @@ handleDrawerOpen = () => {
 getExtsMenuItems(){
   console.log(this.props.agents)
   return this.props.agents.map((agent) => {
-  return <MenuItem value={agent}>{agent.ext}</MenuItem> }
+  return <MenuItem key={agent.ext} value={agent}>{agent.ext}</MenuItem> }
     )
 }
 
@@ -62,9 +65,9 @@ render() {
         <FormControl className={classes.formControl}>
           <InputLabel htmlFor="age-helper">My Extention</InputLabel>
           <Select
-            value={this.state.agent}
+            
             onChange={this.handleChange}
-            input={<Input name="ext" id="age-helper" />}
+            input={<Input value="default" name="ext" id="age-helper" />}
           >
           {menuitems}
             
@@ -86,7 +89,7 @@ render() {
             </IconButton> :
           </div>
  
-   <div><TicketForm agent={this.state.ext} /></div>
+   <div><TicketForm store={this.props.store} categories={this.props.categories} agent={this.state.ext} /></div>
  </div>
 </Drawer>
 </div>

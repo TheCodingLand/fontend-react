@@ -146,6 +146,8 @@ export default class AgentListModel {
 
   }
 
+
+
   onAgentRecieved(data) {
     var listofusers = [];
     if (data.data.allAgents) { listofusers = data.data.allAgents.edges.map((edge) => { return edge.node }) }
@@ -165,5 +167,6 @@ export default class AgentListModel {
     }
     //this.setState( { serverData : { users : users.users } }
   }
+
 
 }

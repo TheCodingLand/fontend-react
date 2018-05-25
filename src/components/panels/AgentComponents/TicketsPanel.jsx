@@ -1,10 +1,10 @@
 import * as React from 'react';
-import Typography from 'material-ui/Typography';
-import Card from 'material-ui/Card'
-import { withTheme } from 'material-ui/styles';
+import Typography from '@material-ui/core/Typography';
+import Card from '@material-ui/core/Card'
+import { withTheme } from '@material-ui/core/styles';
 import { observer } from "mobx-react";
-import MailIcon from 'material-ui-icons/Mail';
-import Badge from 'material-ui/Badge';
+import MailIcon from '@material-ui/icons/Mail';
+import Badge from '@material-ui/core/Badge';
 import { X_OK } from 'constants';
 
 // let defaultStyle = { 

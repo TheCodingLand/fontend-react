@@ -1,23 +1,25 @@
 
+FROM ubuntu:latest
 
+RUN apt-get update
+RUN apt-get install -yq curl git nano
+RUN apt-get install -y npm
+RUN npm install -g npm
+RUN curl -sL https://deb.nodesource.com/setup_9.x | bash -
+RUN apt-get install -y nodejs
+RUN npm install -g http-server
 
-# install latest node
-# https://hub.docker.com/_/node/
-FROM node:latest
+RUN mkdir -p /usr/src/app
+RUN mkdir -p /usr/app/www
 
-# create and set app directory
-RUN mkdir -p /usr/src/app/
 WORKDIR /usr/src/app
 COPY . /usr/src/app/
-# install app dependencies
-# this is done before the following COPY command to take advantage of layer caching
-COPY package.json /usr/src/app/
 RUN npm install
+RUN npm run build
+RUN mkdir -p /usr/app/www/
+RUN yes | cp -rf /usr/src/app/build/* /usr/app/www/
 
-# copy app source to destination container
-COPY . /usr/src/app/
-COPY ./webpack.config/* /usr/src/app/node_modules/react-scripts/config/
+WORKDIR /usr/app/www/
+#CMD ["npm", "start"]
 
-# expose container port
-EXPOSE 3000
-EXPOSE 3001
+CMD ["http-server"]

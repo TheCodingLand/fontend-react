@@ -19,7 +19,13 @@ export default class RootStore {
     this.socket.on('message',((data) =>  { this.handleRedisMessage(data)}));
     
     }
-    
+    updatePendingTickets(id){
+        this.socket.send("updatetickets:"+id)
+        
+        
+
+    }
+
     handleRedisMessage(data){
         data = data.pl.replace('\\"', '"')
         data = JSON.parse(data)

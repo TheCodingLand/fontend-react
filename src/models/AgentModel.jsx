@@ -12,6 +12,7 @@ export default class AgentModel {
   @observable currentCall;
   @observable totalcalls;
   @observable callsWithoutTickets;
+  @observable otUserdisplayname;
   constructor(agent) {
 
     this.ds = new DataProvider();
@@ -26,7 +27,7 @@ export default class AgentModel {
     this.totalcalls = this.getTotalCalls()
     this.callsWithoutTickets = this.getCallsWithoutTickets()
     this.currentUser = this.isCurrentUser
-
+    this.otUserdisplayname= agent.otUserdisplayname
     
    
 
@@ -57,7 +58,7 @@ export default class AgentModel {
   updateState(state) {
     this.phoneState = state;
     if (this.currentUser) {
-      this.getCallsWithoutTickets()
+      this.callsWithoutTickets=this.getCallsWithoutTickets()
     }
   }
 
@@ -72,7 +73,7 @@ export default class AgentModel {
     this.totalcalls= this.getTotalCalls()
     this.callsWithoutTickets = []
     if (this.currentUser) {
-      this.getCallsWithoutTickets()
+      this.callsWithoutTickets=this.getCallsWithoutTickets()
     }
 
     console.log("calling Remove Call")
@@ -94,11 +95,22 @@ onCallListRecieved(data) {
 @action
 onCallsWithoutTicketsRecieved(data){
   let events= []
-  events= data.data.allCalls.edges.map((data) => { if (!data.node.event.edges.node){
-  let event=  {'id':data.node.ucid, 'start':data.node.start, 'origin':data.node.origin}
-  console.log(event)
+
+  
+  
+  events= data.data.allCalls.edges.map((data) => { if (data.node.event.edges[0]){
+    if (data.node.event.edges[0].node.otId){
+      if  (!data.node.event.edges[0].node.ticket) {
+        
+    
+    
+  let event=  {'id':data.node.ucid, 'start':data.node.start, 'origin':data.node.origin, 'otId':data.node.event.edges[0].node.otId}
+  
+
+        
  return event
-}
+}}}
+
 }
 )
 
@@ -109,9 +121,7 @@ this.callsWithoutTickets = events
   @action
   getCallsWithoutTickets() {
     console.log("got calls without tickets")
-    this.ds.getEventsbyAgentExt(this.ext).then((data) => { this.onCallsWithoutTicketsRecieved(data)
-    
-  
+    this.ds.getEventsbyAgentExt(this.ext).then((data) => { this.onCallsWithoutTicketsRecieved(data) 
 })
 }
     

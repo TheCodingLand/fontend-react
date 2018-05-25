@@ -34,6 +34,7 @@ export default class DataProvider {
             ext
             phoneLogin
             phoneState
+            otUserdisplayname
             currentCall{
               ucid
               origin
@@ -66,6 +67,7 @@ export default class DataProvider {
                 ext
                 phoneLogin
                 phoneState
+                otUserdisplayname
               }
             }
           }

@@ -11,6 +11,7 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import Select from '@material-ui/core/Select';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
+import CategoriesSelect from './CategoriesSelect';
 
 const styles = theme => ({
     container: {
@@ -30,14 +31,84 @@ const styles = theme => ({
 
 @observer
 class TicketForm extends React.Component {
+    suggestions = this.props.categories.map((category) => { return { label: category.title, id: category.id} } )
     state = {
         event: '',
+        title: '',
+        description:'',
+        solution:'',
+        category:'',
+        origin: '',
         client: '',
         events: [],
-        selectedEvent: {}
-     
-             
+        selectedEvent: {},
+        response: {}  
     }
+
+    makeTicketSolved(response) {
+      let query = {
+        State :"Solved"
+      }
+
+      return fetch('http://148.110.107.15:5001/api/ot/ticket/'+response.ticket, {
+          method: 'PUT',
+          body: JSON.stringify(query),
+          headers: { 'Accept': 'application/json',
+          'Content-Type': 'application/json'}
+      })
+      .then(response => response.json()).then(response=>this.setState({response:response})).then(() => this.linkEventToTicket(response.ticket, this.state.selectedEvent.otId)).then(
+        () => this.props.store.updatePendingTickets(this.state.selectedEvent.otId))
+
+    }
+    linkEventToTicket(ticketid, eventid) {
+      let query = {
+        RelatedIncident: ticketid
+      }
+
+      return fetch('http://148.110.107.15:5001/api/ot/event/'+eventid, {
+        method: 'PUT',
+        body: JSON.stringify(query),
+        headers: { 'Accept': 'application/json',
+        'Content-Type': 'application/json'}
+    }
+  )
+
+    }
+
+    handleChangeCategory = name => title => {
+      this.props.categories.forEach((category) => {
+        if (category.title === title) {
+          
+          this.setState({category:category.id})
+          console.log(category.id)
+          }
+      
+          })
+      }
+
+  
+    handleTicketSubmit = (e) => {
+      this.props.agent.callsWithoutTickets.remove(this.state.selectedEvent)
+      let ticket = {
+        Title: this.state.title,
+        Description: this.state.description,
+        SolutionDescription: this.state.solution,
+        AssociatedCategory:this.state.category,
+        Applicant:this.props.agent.otUserdisplayname,
+        Responsible:this.props.agent.otUserdisplayname
+      }
+      console.log(JSON.stringify(ticket))
+
+
+        return fetch('http://148.110.107.15:5001/api/ot/tickets', {
+          method: 'PUT',
+          body: JSON.stringify(ticket),
+          headers: { 'Accept': 'application/json',
+          'Content-Type': 'application/json'}
+      })
+      .then(response => response.json()).then(response=> this.makeTicketSolved(response))
+  }
+
     getEvents() {
       
       console.log(this.props.agent)
@@ -50,24 +121,28 @@ class TicketForm extends React.Component {
       this.getEvents()
     }
     
-
-    
     handleChange = name => event => {
+      this.setState({
+        [name]: event.target.value,
+      }
+      )
+    }
+    
+    handleEventChange = name => event => {
         this.setState({
           [name]: event.target.value,
         });
         this.state.events.forEach((e) => {
-          if (e.id ==event.target.value) {
+          if (e) {
+          if (e.id === event.target.value) {
             console.log(e)
-            this.setState({selectedEvent:e})
+            this.setState({selectedEvent:e, origin:e.origin})
             }
-          })
-        
-        
+          }})
       };
     render() {
       
-      const menuitems = this.state.events.map((event) => <MenuItem origin={event.origin} value={event.id}>{event.start}</MenuItem> )
+      const menuitems = this.state.events.map((event) => { if (event) { return <MenuItem origin={event.origin} value={event.id}>{event.start}</MenuItem> }})
         const { classes } = this.props;
     
         return (<div>
@@ -79,7 +154,7 @@ class TicketForm extends React.Component {
             <Select
             value={this.state.event}
 
-            onChange={this.handleChange('event')}
+            onChange={this.handleEventChange('event')}
             
           >
             {menuitems}
@@ -93,29 +168,25 @@ class TicketForm extends React.Component {
               label="call origin"
               className={classes.textField}
               margin="normal"
-              value={this.state.selectedEvent.origin}
+              disabled
+              onChange={this.handleEventChange('origin')}
+              value={this.state.origin}
             />
         <TextField
               id="client"
               label="Client info"
               className={classes.textField}
               margin="normal"
+              onChange={this.handleEventChange('client')}
             />
             <TextField
               id="title"
               label="Title"
               className={classes.textField}
               margin="normal"
+              onChange={this.handleEventChange('title')}
             />
-         <TextField
-              required
-              id="category"
-              label="Category"
-              defaultValue=""
-              className={classes.textField}
-              onChange={this.handleChange('category')}
-              margin="normal"
-            />
+        
             <TextField
               multiline
               id="description"
@@ -124,6 +195,7 @@ class TicketForm extends React.Component {
               margin="normal"
               multiline
               rows="4"
+              onChange={this.handleChange('description')}
             />
             <TextField
               multiline
@@ -133,9 +205,24 @@ class TicketForm extends React.Component {
               margin="normal"
               multiline
               rows="4"
+              onChange={this.handleChange('solution')}
             />
-            
-            <Button onclick>Valider</Button> 
+             <TextField
+              multiline
+              disabled
+              id="response"
+              label="response"
+              className={classes.textField}
+              margin="normal"
+              multiline
+              rows="4"
+              value={this.state.response.status?this.state.response.status:"none"}
+              
+            />
+            <CategoriesSelect categories={this.props.categories}
+            onSelect={this.handleChangeCategory()}
+             />
+            <Button onClick={this.handleTicketSubmit}>Valider</Button> 
             </form>
   </div>            
     )
