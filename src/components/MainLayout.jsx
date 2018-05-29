@@ -23,7 +23,7 @@ export default class MainLayout extends React.Component {
 
         return(
         <Grid style={letterStyle} columns={4}>
-            <Cell width={4}><IncomingPanel categories={this.props.categories} queues={this.props.store.agentStore.queues} store={this.props.store} agents={this.props.store.agentStore.agents}/></Cell>
+            <Cell width={4}><IncomingPanel categories={this.props.categories} store={this.props.store} agents={this.props.store.agentStore.agents}/></Cell>
             <Cell width={4}>
                 <CSSTransitionGroup transitionName="example" transitionEnterTimeout={2500} transitionLeaveTimeout={2500}>
                     {this.props.store.agentStore.agents && this.props.store.agentStore.agents.map((user) => ( <MainAgentPanelLayout key={user.phoneLogin} user={user}></MainAgentPanelLayout>))}

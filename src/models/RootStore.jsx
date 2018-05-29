@@ -21,10 +21,6 @@ export default class RootStore {
     }
     updatePendingTickets(id){
         this.socket.send("updatetickets:"+id)
-        
-        
-        
-
     }
 
     handleRedisMessage(data){

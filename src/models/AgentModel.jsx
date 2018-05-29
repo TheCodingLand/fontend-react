@@ -80,7 +80,7 @@ onCallListRecieved(data) {
 }
 
 
-  getTotalCalls(){
+getTotalCalls(){
     //console.log"GetTotalCalls")
     this.ds.getCallsbyAgentExt(this.ext).then((data) => this.onCallListRecieved(data))
     

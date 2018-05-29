@@ -109,7 +109,7 @@ export default class AgentListModel {
     this.rootStore.ds.getQueueLines().then((data) => this.onQueuesUpdateRecieved(data))
   }
 
-  @action
+
   onQueuesUpdateRecieved(data) {
     
     var listofqueues = [];
@@ -119,10 +119,11 @@ export default class AgentListModel {
 
       
       if (queue.currentCall) {
-        this.queues[i].updateCall(queue.currentCall.ucid)
+        //this.queues[i].updateCall(queue.currentCall.ucid)
+        this.queues[i].currentCall = { callType :  queue.currentCall.callType, origin : queue.currentCall.origin, start:queue.currentCall.start, ucid :  queue.currentCall.ucid }
 
         
-      console.log("updating queue with ext : " + this.queues[i].ext + " with data : " + queue.ext + " " + queue.currentCall.callType + queue.currentCall.origin + queue.currentCall.start + queue.currentCall.ucid )
+      console.log( this.queues[i] )
 
     }else{
       this.queues[i].removeCall()
