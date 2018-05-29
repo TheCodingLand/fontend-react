@@ -9,7 +9,6 @@ import Button from '@material-ui/core/Button';
 import FormControl from '@material-ui/core/FormControl';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import Select from '@material-ui/core/Select';
-import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 import CategoriesSelect from './CategoriesSelect';
 import purple from '@material-ui/core/colors/purple';
@@ -184,9 +183,7 @@ class TicketForm extends React.Component {
   render() {
     let menuitems = []
     if (this.state.events.length > 0) {
-
       menuitems = this.state.events.map((event) => { if (event) { return <MenuItem origin={event.origin} value={event.id}>{event.start}</MenuItem> } })
-
     }
     else {
       menuitems = [<MenuItem origin="nothing" value="None">None</MenuItem>,]
@@ -195,12 +192,11 @@ class TicketForm extends React.Component {
 
     return (<div>
       <form className={classes.container} noValidate autoComplete="off">
-        <p>
-          <FormControl className={classes.selects}>
+      
+          <FormControl fullWidth={true} className={classes.selects}>
             <InputLabel htmlFor="event">Event</InputLabel>
 
             <Select className={classes.selects}
-             
               required
               value={this.state.event}
 
@@ -211,7 +207,7 @@ class TicketForm extends React.Component {
             </Select>
             <FormHelperText>Select your Event</FormHelperText>
           </FormControl>
-        </p>
+      
 
         <TextField
           id="origin"
