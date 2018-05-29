@@ -140,6 +140,7 @@ this.callsWithoutTickets = events
     else {
       this.currentCall.origin = "hidden"
     }
+    this.getCallsWithoutTickets()
   }
 
   @action
@@ -162,6 +163,7 @@ this.callsWithoutTickets = events
   updateCall(ucid) {
     //console.log"UpdateCall")
     this.ds.GetCall(ucid).then((data) => this.onCallRecieved(data))
+
   }
 
   @action
@@ -179,6 +181,7 @@ this.callsWithoutTickets = events
     if (listofcalls.length > 0) {
 
       this.setCall(listofcalls[0])
+      
     }
   }
 }

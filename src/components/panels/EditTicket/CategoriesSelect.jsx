@@ -33,9 +33,11 @@ function renderInput(inputProps) {
 
   return (
     <TextField
+      
       InputProps={{
         inputRef: ref,
         classes: {
+          
          
         },
         ...InputProps,
@@ -79,6 +81,7 @@ const styles = theme => ({
     height: 250,
   },
   container: {
+    witdth:800,
     flexGrow: 1,
     position: 'relative',
   },
@@ -94,6 +97,7 @@ const styles = theme => ({
   },
   inputRoot: {
     flexWrap: 'wrap',
+   
   },
 });
 

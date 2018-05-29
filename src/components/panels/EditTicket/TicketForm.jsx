@@ -21,7 +21,12 @@ const styles = theme => ({
   textField: {
     marginLeft: theme.spacing.unit,
     marginRight: theme.spacing.unit,
-    width: 200,
+    width: '100%',
+  },
+  categoryField: {
+    marginLeft: theme.spacing.unit,
+    marginRight: theme.spacing.unit,
+    width: 800,
   },
   menu: {
     width: 200,
@@ -199,13 +204,7 @@ class TicketForm extends React.Component {
           onChange={this.handleEventChange('origin')}
           value={this.state.origin}
         />
-        <TextField
-          id="client"
-          label="Client info"
-          className={classes.textField}
-          margin="normal"
-          onChange={this.handleEventChange('client')}
-        />
+       
         <TextField
           required
           id="title"
@@ -222,40 +221,45 @@ class TicketForm extends React.Component {
           label="Description"
           className={classes.textField}
           margin="normal"
-          multiline
-          rows="4"
+          rowsMax="4"
           onChange={this.handleChange('description')}
         />
+        <br />
         <TextField
           required
-          multiline
+          rowsMax="4"
           id="solution"
           label="Solution"
           className={classes.textField}
           margin="normal"
           multiline
-          rows="4"
+          
           onChange={this.handleChange('solution')}
         />
+        <div style={{width:'800px'}}><p>
+       
+        <CategoriesSelect categories={this.props.categories}
+          required
+          onSelect={this.handleChangeCategory()}
+          
+        />
+        </p>
+        </div>
+        <div style={{width:'100%'}}>
+        
+        <Button onClick={this.handleTicketSubmit}>Valider</Button>
         <TextField
-
           color="secondary"
-          multiline
           disabled
           id="response"
           label="response"
           className={classes.textField}
           margin="normal"
-          multiline
-          rows="4"
+          rowsMax="4"
           value={this.state.response.status ? this.state.response.status : "none"}
 
         />
-        <CategoriesSelect categories={this.props.categories}
-          required
-          onSelect={this.handleChangeCategory()}
-        />
-        <Button onClick={this.handleTicketSubmit}>Valider</Button>
+       </div>
       </form>
     </div>
     )

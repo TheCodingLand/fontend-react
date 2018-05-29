@@ -11,10 +11,11 @@ RUN npm install -g http-server
 
 RUN mkdir -p /usr/src/app
 RUN mkdir -p /usr/app/www
-
+RUN npm install npm@latest -g
 WORKDIR /usr/src/app
 COPY . /usr/src/app/
-RUN npm install
+ADD package.json /usr/src/app/package.json
+RUN npm install 
 RUN npm run build
 RUN mkdir -p /usr/app/www/
 RUN yes | cp -rf /usr/src/app/build/* /usr/app/www/
