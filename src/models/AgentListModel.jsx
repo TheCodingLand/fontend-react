@@ -11,7 +11,6 @@ export default class AgentListModel {
     this.rootStore = rootStore
   }
 
-  //    this.GetAgentList()
   @observable queues = [];
   @observable incomingCalls = [];
   @observable agents = [];
@@ -52,9 +51,8 @@ export default class AgentListModel {
     if (data.action === "transferring") {
       for (let i = 0; i < this.agents.length; i++) {
         if (data.data === this.agents[i].phoneLogin) {
-          //this.agents[i].removeCall()
           this.GetAgent(data.data)
-          
+
         }
       }
 
@@ -73,16 +71,12 @@ export default class AgentListModel {
     }
     if (data.action === "create") {
       this.GetQueuesUpdates()
-      console.log("updating queue")
     }
     if (data.action === "calltype") {
       this.GetQueuesUpdates()
-      console.log("updating queue")
     }
 
-
   }
-
 
   @computed
   get loggedInAgentsCount() {
@@ -94,25 +88,50 @@ export default class AgentListModel {
     this.agents.remove(agent)
   }
 
-
-
   @action
   addAgent(agent) {
-    //console.log(agent)
+
     this.agents.push(new AgentModel(agent))
   }
 
   @action
   async GetAgentList() {
 
-    //this.ds.ListAgents().then((data) => console.log(data))    
     this.rootStore.ds.ListAgents().then((data) => this.onListRecieved(data))
   }
 
   @action
-  async GetQueuesUpdates() {
+  async GetQueuesList() {
     this.rootStore.ds.getQueueLines().then((data) => this.onQueuesRecieved(data))
   }
+  @action
+  async GetQueuesUpdates() {
+    this.rootStore.ds.getQueueLines().then((data) => this.onQueuesUpdateRecieved(data))
+  }
+
+  @action
+  onQueuesUpdateRecieved(data) {
+    
+    var listofqueues = [];
+    if (data.data.allAgents) { listofqueues = data.data.allAgents.edges.map((edge) => { return edge.node }) }
+    for (let i = 0; i < this.queues.length; i++) {
+    listofqueues.forEach((queue) => { if (queue.ext === this.queues[i].ext ) {
+
+      
+      if (queue.currentCall) {
+        this.queues[i].updateCall(queue.currentCall.ucid)
+
+        
+      console.log("updating queue with ext : " + this.queues[i].ext + " with data : " + queue.ext + " " + queue.currentCall.callType + queue.currentCall.origin + queue.currentCall.start + queue.currentCall.ucid )
+
+    }else{
+      this.queues[i].removeCall()
+    }
+
+    } })
+
+
+  }}
 
   onListRecieved(data) {
     var listofusers = [];
@@ -123,25 +142,25 @@ export default class AgentListModel {
   }
 
 
-
+  
   onQueuesRecieved(data) {
     var listofqueues = [];
     if (data.data.allAgents) { listofqueues = data.data.allAgents.edges.map((edge) => { return edge.node }) }
-    this.queues = []
+    this.queues=[]
+    
     listofqueues.map((queue) => this.addQueue(queue))
     //this.setState( { serverData : { users : users.users } }
   }
 
   @action
   addQueue(queue) {
-    //console.log(agent)
+
     this.queues.push(new AgentModel(queue))
   }
 
 
   @action
   async GetAgent(login) {
-    //this.ds.ListAgents().then((data) => console.log(data))    
     this.rootStore.ds.GetAgent(login).then((data) => this.onAgentRecieved(data))
 
   }

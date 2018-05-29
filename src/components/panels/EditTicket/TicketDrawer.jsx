@@ -33,17 +33,15 @@ state ={
 }
 handleChange = event => {
   this.setState({ [event.target.name]: event.target.value });
-  this.props.agents.forEach(agent => { if (agent.ext === event.target.value) { return agent }
-    
+  this.props.agents.forEach(agent => { if (agent.ext === event.target.value) { agent.setCurrentUser(); return agent }
   });
-  
 };
 
 handleDrawerOpen = () => {
   this.setState({ open: true });
 };
 getExtsMenuItems(){
-  console.log(this.props.agents)
+ 
   return this.props.agents.map((agent) => {
   return <MenuItem key={agent.ext} value={agent}>{agent.ext}</MenuItem> }
     )
@@ -65,17 +63,11 @@ render() {
         <FormControl className={classes.formControl}>
           <InputLabel htmlFor="age-helper">My Extention</InputLabel>
           <Select
-            
             onChange={this.handleChange}
             input={<Input value="default" name="ext" id="age-helper" />}
           >
           {menuitems}
-            
-            
-            
-           
           </Select>
-          
         </FormControl>}
  <Drawer
  anchor="bottom"

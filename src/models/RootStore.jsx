@@ -23,6 +23,7 @@ export default class RootStore {
         this.socket.send("updatetickets:"+id)
         
         
+        
 
     }
 

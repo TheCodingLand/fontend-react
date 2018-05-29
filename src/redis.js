@@ -19,7 +19,7 @@ io.on('connection', function (socket) {
   io.emit('this', { will: 'be received by everyone' });
 
   socket.on('message', function (from, msg) {
-    console.log('I received a private message by ', from);
+    //console.log('I received a private message by ', from);
     var tbl = from.split(":")
 
     if (tbl[0] === "updatetickets") { pub.hmset("updatetickets"+Date.now().toString(), ["action", "updatetickets", "timestamp", "", "id", tbl[1]]) }

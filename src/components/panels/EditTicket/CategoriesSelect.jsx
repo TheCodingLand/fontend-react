@@ -24,7 +24,7 @@ function getSuggestions(suggestions, inputValue) {
 
     return keep;
   });
-  console.log(values)
+
   return values
 }
 

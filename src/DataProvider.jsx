@@ -94,7 +94,6 @@ export default class DataProvider {
             }
             }
          ` })
-    console.log(data)
     return data
 
   }

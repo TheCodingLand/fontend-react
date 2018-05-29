@@ -7,18 +7,18 @@ import MainLayout from './components/MainLayout'
 import Loader from './components/Loader'
 import DevTools from 'mobx-react-devtools';
 
-
+//import Perf from 'react-addons-perf'; // ES6
 
 class App extends React.Component {
+
   constructor() {
     super();
     this.store = new RootStore();
     this.store.agentStore.GetAgentList()
-    this.store.agentStore.GetQueuesUpdates()
+    this.store.agentStore.GetQueuesList()
     this.getCategories().then(
         (categories) => categories.filter(category => category.state === "Active")).then(
-            (categories) => this.setState({categories:categories})).then(
-              () => this.setState({loaded:true}))
+            (categories) => this.setState({categories:categories}))
   }
   state = {
     categories : [],
@@ -27,6 +27,7 @@ class App extends React.Component {
 
   getCategories() {
     
+
     let query = {
       
         objectclass: "Category",
@@ -53,14 +54,16 @@ class App extends React.Component {
   
 
 render() {
+  //Perf.start()
     return(
       <div>
        
      <CssBaseline  />
-     {this.state.loaded?<MainLayout categories={this.state.categories} store={this.store}/>:<Loader /> 
+     {this.state.categories!==[]?<MainLayout categories={this.state.categories} store={this.store}/>:<Loader /> 
     }
      </div>
      )
+//     Perf.stop()
   }
 }
 

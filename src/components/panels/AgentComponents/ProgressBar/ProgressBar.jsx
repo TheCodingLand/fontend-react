@@ -41,7 +41,7 @@ class Pbar extends React.Component {
     return (
         
       <div className={classes.root}>
-        <LinearProgress color="accent" mode="determinate" value={this.state.completed} />
+        <LinearProgress color="secondary" mode="determinate" value={this.state.completed} />
         
       </div>
     

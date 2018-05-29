@@ -8,7 +8,7 @@ import 'typeface-roboto'
 //MUI
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 
-import registerServiceWorker from './registerServiceWorker';
+
 
 import App from './App';
 
@@ -34,5 +34,4 @@ const theme = createMuiTheme({
 
 
 ReactDOM.render(<MuiThemeProvider theme={theme}><App /></MuiThemeProvider>, document.getElementById('root'));
-registerServiceWorker();
 

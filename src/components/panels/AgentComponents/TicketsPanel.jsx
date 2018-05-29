@@ -17,25 +17,21 @@ class TicketsPanel extends React.Component {
    
       if (this.props.user.currentCall.origin ==="False"){
       return (<div><Card style={{ overflowX: 'hidden', flex: 'auto', height: "90px", width: "100%" }}>
-          <Typography>Unknown client call. Your stats : </Typography><p></p><Badge badgeContent={this.props.user.totalcalls} color="accent"><MailIcon style={{ width: 10, height: 10 }} /></Badge>
+          <Typography>Unknown client call. Your stats : </Typography><p></p><Badge badgeContent={this.props.user.totalcalls?this.props.user.totalcalls:"0"} color="secondary"><MailIcon style={{ width: 10, height: 10 }} /></Badge>
         </Card></div>)
-      
     }
       else
     {
     if (this.props.user.currentCall.tickets) {
-      //console.log(this.props.user.currentCall)
+
       if (this.props.user.currentCall.tickets.length > 0) {
 
-        //console.log(this.props.user.currentCall.tickets[0].category.title)
         let tickets = []
         for (let i = 0; i < this.props.user.currentCall.tickets.length; i++) {
           let t
           if (this.props.user.currentCall.tickets[i]) {
             let ticket = this.props.user.currentCall.tickets[i]
-            console.log(ticket.title)
             if (ticket.title) {
-              console.log(ticket)
               tickets.push(ticket)
             }
           }
@@ -43,21 +39,19 @@ class TicketsPanel extends React.Component {
         tickets = tickets.slice(-3)
         return (<div><Card style={{ overflowX: 'hidden', flex: 'auto', height: "90px", width: "100%" }}>
 
-
           {tickets.map((ticket) => (<Typography key={ticket.otId}><b>Ticket : </b>{ticket.title}</Typography>))}
         </Card></div>)
-      
       }
       else {
         return (<div><Card style={{ overflowX: 'hidden', flex: 'auto', height: "90px", width: "100%" }}>
-          <Typography>your current stats :</Typography><p></p><Badge badgeContent={this.props.user.totalcalls} color="accent"><MailIcon style={{ width: 10, height: 10 }} /></Badge>
+          <Typography>your current stats :</Typography><p></p><Badge badgeContent={this.props.user.totalcalls?this.props.user.totalcalls:"0"} color="secondary"><MailIcon style={{ width: 10, height: 10 }} /></Badge>
         </Card></div>)
       }
     }
 
     else {
       return (<div><Card style={{ overflowX: 'hidden', flex: 'auto', height: "90px", width: "100%" }}>
-        <Typography>your current stats :</Typography><p></p><Badge badgeContent={this.props.user.totalcalls} color="accent"><MailIcon style={{ width: 10, height: 10 }} /></Badge>
+        <Typography>your current stats :</Typography><p></p><Badge badgeContent={this.props.user.totalcalls?this.props.user.totalcalls:"0"} color="secondary"><MailIcon style={{ width: 10, height: 10 }} /></Badge>
 
 
       </Card></div>)
