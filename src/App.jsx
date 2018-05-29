@@ -1,4 +1,5 @@
 import * as React from 'react';
+
 //import AgentList from "./components/TodoList";
 import CssBaseline from '@material-ui/core/CssBaseline';
 import RootStore from "./models/RootStore";
@@ -7,10 +8,11 @@ import MainLayout from './components/MainLayout'
 import Loader from './components/Loader'
 import DevTools from 'mobx-react-devtools';
 
+import Version from './components/Version'
 //import Perf from 'react-addons-perf'; // ES6
 
 class App extends React.Component {
-
+  version = "0.1.2"
   constructor() {
     super();
     this.store = new RootStore();
@@ -57,8 +59,10 @@ render() {
   //Perf.start()
     return(
       <div>
+        
        
      <CssBaseline  />
+     <Version version ={this.version}/>
      {this.state.categories!==[]?<MainLayout categories={this.state.categories} store={this.store}/>:<Loader /> 
     }
      </div>

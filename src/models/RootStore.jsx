@@ -7,8 +7,9 @@ import DataProvider from './../DataProvider'
 
 export default class RootStore {
     constructor() {
-    this.lastUpdate = Date.now(); 
-    
+    this.lastUpdate = Date.now()
+    this.lastUpdates =[]
+
     this.lastRedisUpdate = {}
     
     let SOCKET_URL = "ws.lbr.lu"
@@ -23,6 +24,10 @@ export default class RootStore {
     }
     updatePendingTickets(id){
         this.socket.send("updatetickets:"+id)
+    }
+
+    addUpdate(data){
+
     }
 
     handleRedisMessage(data){

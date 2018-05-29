@@ -7,7 +7,7 @@ import { CSSTransitionGroup } from 'react-transition-group';
 import "./MainLayout.css"
 import { observer } from "mobx-react";
 import IncomingPanel from './panels/IncomingPanel'
-import Typography from '@material-ui/core/Typography';
+
 
 var letterStyle = {
     padding: 10,
@@ -29,7 +29,8 @@ export default class MainLayout extends React.Component {
                     {this.props.store.agentStore.agents && this.props.store.agentStore.agents.map((user) => ( <MainAgentPanelLayout key={user.phoneLogin} user={user}></MainAgentPanelLayout>))}
                 </CSSTransitionGroup>
             </Cell>
-            {//<Cell width={1} height={2}>
+            {
+                //<Cell width={1} height={2}>
                // <Grid columns={1}>
                     //<Cell width={1} height={1}><StatsPanel/></Cell>}
                     
@@ -37,14 +38,9 @@ export default class MainLayout extends React.Component {
                     
                // </Grid>
            // </Cell>
-                }<div style={{position:'absolute', right:0,bottom:0}}><Typography>version 0.1.1</Typography></div>
+                }
         </Grid>
         
         );
     };
 }
-/* <CSSTransitionGroup
-                        transitionName="example"
-                        transitionEnterTimeout={2500}
-                        transitionLeaveTimeout={2500}>
-                          </CSSTransitionGroup> */

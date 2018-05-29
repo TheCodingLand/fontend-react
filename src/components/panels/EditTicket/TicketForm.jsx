@@ -12,16 +12,26 @@ import Select from '@material-ui/core/Select';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 import CategoriesSelect from './CategoriesSelect';
+import purple from '@material-ui/core/colors/purple';
 
 const styles = theme => ({
   container: {
     display: 'flex',
     flexWrap: 'wrap',
   },
-  textField: {
+  selects:{
+    marginLeft: theme.spacing.unit,
+  },
+  resultField:{
     marginLeft: theme.spacing.unit,
     marginRight: theme.spacing.unit,
-    width: '100%',
+    width: '100',
+  },
+  textField: {
+
+    marginLeft: theme.spacing.unit,
+    marginRight: theme.spacing.unit,
+    width: '90%',
   },
   categoryField: {
     marginLeft: theme.spacing.unit,
@@ -31,6 +41,13 @@ const styles = theme => ({
   menu: {
     width: 200,
   },
+  cssRoot: {
+    color: theme.palette.getContrastText(purple[500]),
+    backgroundColor: purple[500],
+    '&:hover': {
+      backgroundColor: purple[700],
+    },
+  }
 });
 
 
@@ -179,10 +196,11 @@ class TicketForm extends React.Component {
     return (<div>
       <form className={classes.container} noValidate autoComplete="off">
         <p>
-          <FormControl className={classes.formControl}>
+          <FormControl className={classes.selects}>
             <InputLabel htmlFor="event">Event</InputLabel>
 
-            <Select
+            <Select className={classes.selects}
+             
               required
               value={this.state.event}
 
@@ -236,7 +254,7 @@ class TicketForm extends React.Component {
           
           onChange={this.handleChange('solution')}
         />
-        <div style={{width:'800px'}}><p>
+        <div className = {classes.selects} style={{width:'800px'}}><p>
        
         <CategoriesSelect categories={this.props.categories}
           required
@@ -247,13 +265,14 @@ class TicketForm extends React.Component {
         </div>
         <div style={{width:'100%'}}>
         
-        <Button onClick={this.handleTicketSubmit}>Valider</Button>
+        <Button className={classes.cssRoot} variant="raised" color="primary" onClick={this.handleTicketSubmit}>Valider</Button>
         <TextField
           color="secondary"
           disabled
           id="response"
           label="response"
-          className={classes.textField}
+          className={classes.resultField}
+          
           margin="normal"
           rowsMax="4"
           value={this.state.response.status ? this.state.response.status : "none"}
