@@ -7,7 +7,7 @@ import { CSSTransitionGroup } from 'react-transition-group';
 import "./MainLayout.css"
 import { observer } from "mobx-react";
 import IncomingPanel from './panels/IncomingPanel'
-
+import Typography from '@material-ui/core/Typography';
 
 var letterStyle = {
     padding: 10,
@@ -37,8 +37,9 @@ export default class MainLayout extends React.Component {
                     
                // </Grid>
            // </Cell>
-                }
+                }<div style={{position:'absolute', right:0,bottom:0}}><Typography>version 0.1.1</Typography></div>
         </Grid>
+        
         );
     };
 }

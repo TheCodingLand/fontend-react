@@ -8,7 +8,9 @@ import DataProvider from './../DataProvider'
 export default class RootStore {
     constructor() {
     this.lastUpdate = Date.now(); 
+    
     this.lastRedisUpdate = {}
+    
     let SOCKET_URL = "ws.lbr.lu"
     this.ds = new DataProvider();  
 
@@ -27,11 +29,11 @@ export default class RootStore {
         data = data.pl.replace('\\"', '"')
         data = JSON.parse(data)
         if (data.action === this.lastRedisUpdate.action && data.data === this.lastRedisUpdate.data) {
-            if (Date.now() - this.lastUpdate > 4000) {
-                
-                this.agentStore.handleMessage(data)
+            if (Date.now() - this.lastUpdate > 100) {
                 this.lastUpdate = Date.now()
                 this.lastRedisUpdate = data
+                this.agentStore.handleMessage(data)
+                
             }
         }
         else {

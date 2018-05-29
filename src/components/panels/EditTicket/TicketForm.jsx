@@ -45,7 +45,7 @@ class TicketForm extends React.Component {
     category: '',
     origin: '',
     client: '',
-    events: [],
+    events: this.props.agent.callsWithoutTickets,
     selectedEvent: {},
     response: {},
 
@@ -136,12 +136,12 @@ class TicketForm extends React.Component {
       .then(response => response.json()).then(response => this.makeTicketSolved(response))
   }
 
-  getEvents() {
-    this.setState({ events: this.props.agent.callsWithoutTickets })
-  }
+  //getEvents() {
+  //  this.setState({ events: this.props.agent.callsWithoutTickets })
+  //}
 
   componentDidMount() {
-    this.getEvents()
+    //this.getEvents()
 
   }
 
