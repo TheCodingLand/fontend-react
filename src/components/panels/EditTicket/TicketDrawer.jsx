@@ -29,12 +29,13 @@ class TicketDrawer extends React.Component {
   
 state ={
   open : false,
-  ext : false,
   agent: false
 }
 handleChange = event => {
   this.setState({ [event.target.name]: event.target.value });
-  this.props.store.agentStore.agents.forEach(agent => { if (agent.ext === event.target.value) { agent.setCurrentUser(); return agent }
+  this.props.store.agentStore.agents.forEach(agent => { if (agent === event.target.value) { 
+    this.props.store.agentStore.setCurrentUser(agent); 
+   }
   });
 };
 
@@ -46,6 +47,8 @@ handleDrawerOpen = () => {
 handleDrawerClose = () => {
   this.setState({ open: false });
 };
+
+
 
 render() {
   

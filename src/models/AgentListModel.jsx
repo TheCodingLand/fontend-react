@@ -1,5 +1,6 @@
 import { observable, computed, action } from "mobx";
 import AgentModel from "./AgentModel";
+import CallModel from "./CallsModel";
 
 //actions:
 //calls : newcall, phonenumber, calltype, transfer, endcall
@@ -8,13 +9,21 @@ import AgentModel from "./AgentModel";
 export default class AgentListModel {
   constructor(ds) {
     this.ds = ds
+    
   }
+  @observable calls= []
+  @observable queues = []
+  @observable agents = []
 
-  @observable queues = [];
-  @observable agents = [];
+  currentUser = {}
+
+  getActiveCalls(){
+    this.ds.getActiveCalls().then((calls) => {calls.data.allCalls.edges.map(call => { return new CallModel(call.node, this) })}).then(calls => this.calls = calls)
+  }
 
   async handleMessage(data) {
     if (data.action === "logoff") {
+      console.log(`logoff detected for ${data.id}`)
       for (let i = 0; i < this.agents.length; i++) {
         if (data.id === this.agents[i].phoneLogin) {
           this.removeAgent(this.agents[i])
@@ -23,10 +32,12 @@ export default class AgentListModel {
     }
 
     if (data.action === "login") {
+      console.log(`login detected for ${data.id}`)
       this.GetAgent(data.id)
     }
 
     if (data.action === "changestate") {
+      console.log(`State change detected for ${data.id}, into ${data.data}`)
       for (let i = 0; i < this.agents.length; i++) {
         if (data.id === this.agents[i].phoneLogin) {
           this.agents[i].updateState(data.data)
@@ -36,6 +47,7 @@ export default class AgentListModel {
     }
 
     if (data.action === "transfer") {
+      console.log(`transfer detected for ${data.data}, call : ${data.id}`)
       this.GetQueuesUpdates().then(() => {
       for (let i = 0; i < this.agents.length; i++) {
         if (data.data === this.agents[i].phoneLogin) {
@@ -54,6 +66,7 @@ export default class AgentListModel {
     } */
 
     if (data.action === "endcall") {
+      console.log(`call end detected for ${data.data}, call : ${data.id}`)
       this.GetQueuesUpdates().then(() => {
       for (let i = 0; i < this.agents.length; i++) {
         if (data.data === this.agents[i].phoneLogin) {
@@ -66,6 +79,7 @@ export default class AgentListModel {
     }
 
     if (data.action === "create") {
+      console.log(`detected create call ${data.id}`)
       this.GetQueuesUpdates()
     }
     if (data.action === "calltype") {
@@ -81,6 +95,15 @@ export default class AgentListModel {
   @action
   removeAgent(agent) {
     this.agents.remove(agent)
+  }
+
+  @action
+  setCurrentUser(agent) {
+    console.log(`current user SET ! : ${agent.ext}`)
+    agent.getCallsWithoutTickets()
+    this.currentUser=agent
+    agent.currentUser=true
+    
   }
 
   @action

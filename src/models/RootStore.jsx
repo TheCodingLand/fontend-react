@@ -1,11 +1,10 @@
 import AgentListModel from './AgentListModel'
 import io from 'socket.io-client';
-
-
 import DataProvider from './../DataProvider'
 
 
 export default class RootStore {
+    
     constructor() {
     console.log("Loading root store")
     let SOCKET_URL = "ws.lbr.lu"

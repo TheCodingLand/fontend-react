@@ -192,6 +192,28 @@ node{
     return data
   } 
 
+  async getActiveCalls(phone) {
+    this.client.cache.reset();
+    let data = await this.client.query({
+      query: gql`query
+  {
+    allCalls(state: "new") {
+      edges {
+        node {
+          ucid
+          start
+          origin
+          destination
+          callType
+        }
+      }
+    }
+  }`
+})
+return data
+  }
+
+  
   async getEventsbyAgentExt(phone) {
     this.client.cache.reset();
     let datestart = new Date(Date.now()).toISOString()

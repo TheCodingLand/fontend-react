@@ -12,13 +12,14 @@ import Version from './components/Version'
 //import Perf from 'react-addons-perf'; // ES6
 
 class App extends React.Component {
-  version = "1.0"
+  version = "1.0.1"
 
   constructor() {
     super();
     this.store = new RootStore();
     this.store.agentStore.GetAgentList()
     this.store.agentStore.GetQueuesList()
+    this.store.agentStore.getActiveCalls()
     //this.getCategories().then(
     //    (categories) => categories.filter(category => category.state === "Active")).then(
     //        (categories) => this.setState({categories:categories}))
@@ -33,7 +34,7 @@ class App extends React.Component {
 
   componentWillMount(){
     this.getCategoriesFromResponseFile()
-    setInterval(()=> {console.log(this.store)},5000)
+   // setInterval(()=> {console.log(this.store)},5000)
   }
   getCategoriesFromResponseFile(){
     let catlist = response.Category.map(category => { return { id: category.id, title : category.data.Path, state : category.data.State}  })

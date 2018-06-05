@@ -25,11 +25,15 @@ export default class AgentModel {
     this.phoneState = agent.phoneState;
     this.totalcalls = "";
     this.currentCall = { ucid: "", origin: "", start: "", destination: "", callType: "", tickets: [] }
-    this.totalcalls = 0;
+    this.totalcalls = []
+    this.getCallsCount() 
     this.callsWithoutTickets = []
     this.currentUser = false
     this.otUserdisplayname = agent.otUserdisplayname
+    if (rootstore.currentUser.ext === this.ext) {
     this.getCallsWithoutTickets()
+    this.currentUser=true
+    }
     
 
     if (agent.currentCall) {
@@ -44,15 +48,15 @@ export default class AgentModel {
 
   @action
   setCurrentUser() {
-    //console.log"setCurrentUser")
+ 
     this.currentUser = true
   }
 
   @action
   updateState(state) {
-    //console.log"updateState")
+  
     this.phoneState = state;
-    //this.getCallsWithoutTickets()
+    
   }
 
   @action
@@ -64,10 +68,12 @@ export default class AgentModel {
     this.currentCall.destination = ""
     this.currentCall.callType = ""
     this.currentCall.tickets = null
-    
+    this.getCallsCount()
   }
 
-
+  getCallsCount(){
+  this.ds.getCallsbyAgentExt(this.ext).then((data) => { this.totalcalls= data.data.allCalls.edges.length })
+}
 
 
 
@@ -97,7 +103,8 @@ export default class AgentModel {
 
   
   getCallsWithoutTickets() {
-    //console.log"GetCallsWithoutTickets")
+    
+    console.log(`updating events without tickets for phone number ${this.ext}`)
     this.ds.getEventsbyAgentExt(this.ext).then((data) => { this.onCallsWithoutTicketsRecieved(data) })
   }
 
@@ -111,12 +118,18 @@ export default class AgentModel {
     this.currentCall.callType = call.callType
     if (call.origin !== "False") {
       this.currentCall.origin = call.origin
+      
+      console.log(`getting tickets for phone number ${call.origin}`)
       this.ds.getTicketbyPhone(call.origin).then((data) => this.onTicketsRecieved(data))
     }
     else {
       this.currentCall.origin = "hidden"
     }
+    if (this.currentUser) {
+    
     this.getCallsWithoutTickets()
+    }
+
   }
 
 
