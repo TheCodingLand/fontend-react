@@ -1,8 +1,5 @@
-
 import * as React from 'react';
-import Typography from '@material-ui/core/Typography';
 import Card from '@material-ui/core/Card';
-
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
@@ -53,7 +50,7 @@ return (<Stepper key={queue.ext} activeStep = {activestep} alternativeLabel>{ste
         
 
       return(<div><GridMaterial container spacing={24} style={{ flexGrow: 1 }} >
-        <GridMaterial style={{ flex: 'auto', width:"15%", height: "135px", paddingRight:"0px", paddingLeft:"0px", paddingBottom:"10px"}} item xs><Card style={{ flex: 'auto', height: "135px" }}><CardHeader title="Queues Status"/>
+        <GridMaterial style={{ flex: 'auto', width:"15%", maxHeight: "130px", paddingRight:"0px", paddingLeft:"10px", paddingBottom:"10px"}} item xs><Card style={{ flex: 'auto', maxHeight: "130px" }}><CardHeader title="Queues Status"/>
       { this.props.agents.length >0 ? <TicketDrawer store={this.props.store} categories={this.props.categories} agents={this.props.agents} />:<div></div>}</Card></GridMaterial>
         {  this.props.store.agentStore.queues &&  this.props.store.agentStore.queues.map((queue) => { return (
           <GridMaterial style={{ flex: 'auto', height: "145px" ,width:"25%",paddingRight:"0px", paddingLeft:"0px"}} key={queue.ext} item xs>

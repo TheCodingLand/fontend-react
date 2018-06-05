@@ -4,16 +4,17 @@ import Drawer from '@material-ui/core/Drawer';
 import TicketForm from './TicketForm';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
+
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { withStyles } from '@material-ui/core/styles';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
-import FormHelperText from '@material-ui/core/FormHelperText';
+
 import Select from '@material-ui/core/Select';
 import { observer } from "mobx-react";
+
 const styles = {
   list: {
     width: 250,
@@ -33,28 +34,23 @@ state ={
 }
 handleChange = event => {
   this.setState({ [event.target.name]: event.target.value });
-  this.props.agents.forEach(agent => { if (agent.ext === event.target.value) { agent.setCurrentUser(); return agent }
+  this.props.store.agentStore.agents.forEach(agent => { if (agent.ext === event.target.value) { agent.setCurrentUser(); return agent }
   });
 };
 
 handleDrawerOpen = () => {
   this.setState({ open: true });
 };
-getExtsMenuItems(){
- 
-  return this.props.agents.map((agent) => {
-  return <MenuItem key={agent.ext} value={agent}>{agent.ext}</MenuItem> }
-    )
-}
+
 
 handleDrawerClose = () => {
   this.setState({ open: false });
 };
 
 render() {
-  const menuitems= this.getExtsMenuItems()
+  
   const { classes } = this.props;
-  const { open } = this.state;  
+
  return (
   
     <div>
@@ -66,7 +62,9 @@ render() {
             onChange={this.handleChange}
             input={<Input value="default" name="ext" id="age-helper" />}
           >
-          {menuitems}
+          { this.props.store.agentStore.agents.map((agent) => {
+          return <MenuItem key={agent.ext} value={agent}>{agent.ext}</MenuItem> } )}
+          
           </Select>
         </FormControl>}
  <Drawer
@@ -76,7 +74,7 @@ render() {
   <div>
           <div>
           
-            <IconButton onClick={() => {this.handleDrawerClose;}}>
+            <IconButton onClick={() => {this.handleDrawerClose()}}>
             <ExpandMoreIcon />
             </IconButton> :
           </div>

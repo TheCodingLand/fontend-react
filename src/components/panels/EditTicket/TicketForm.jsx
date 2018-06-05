@@ -69,10 +69,7 @@ class TicketForm extends React.Component {
   }
 
   makeTicketSolved(response) {
-    if (response.status !== "success") {
-      //console.log("An Error Occured while making ticket solved")
-    }
-    else {
+  
 
 
       let query = {
@@ -90,7 +87,7 @@ class TicketForm extends React.Component {
         .then(response => response.json()).then(() => this.linkEventToTicket(response.ticket, this.state.selectedEvent.otId))
 
     }
-  }
+  
 
   linkEventToTicket(ticketid, eventid) {
     let query = {
@@ -149,7 +146,7 @@ class TicketForm extends React.Component {
         'Content-Type': 'application/json'
       }
     })
-      .then(response => response.json()).then(response => this.makeTicketSolved(response))
+      .then(response => response.json()).then(response => { if (response.status ==='success') { this.makeTicketSolved(response)} else {this.setState({response:response})}})
   }
 
   //getEvents() {
@@ -183,10 +180,10 @@ class TicketForm extends React.Component {
   render() {
     let menuitems = []
     if (this.state.events.length > 0) {
-      menuitems = this.state.events.map((event) => { if (event) { return <MenuItem origin={event.origin} value={event.id}>{event.start}</MenuItem> } })
+      menuitems = this.state.events.map((event) => {  return <MenuItem key={event.id} origin={event.origin} value={event.id}>{event.start}</MenuItem> } )
     }
     else {
-      menuitems = [<MenuItem origin="nothing" value="None">None</MenuItem>,]
+      menuitems = [<MenuItem key={1} origin="nothing" value="None">None</MenuItem>,]
     }
     const { classes } = this.props;
 
@@ -250,14 +247,14 @@ class TicketForm extends React.Component {
           
           onChange={this.handleChange('solution')}
         />
-        <div className = {classes.selects} style={{width:'800px'}}><p>
+        <div className = {classes.selects} style={{width:'800px'}}>
        
         <CategoriesSelect categories={this.props.categories}
           required
           onSelect={this.handleChangeCategory()}
           
         />
-        </p>
+        
         </div>
         <div style={{width:'100%'}}>
         

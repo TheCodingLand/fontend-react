@@ -1,5 +1,5 @@
 import { observable, action } from "mobx";
-import DataProvider from './../DataProvider'
+
 
 
 
@@ -13,9 +13,9 @@ export default class AgentModel {
   @observable totalcalls;
   @observable callsWithoutTickets;
   @observable otUserdisplayname;
-  constructor(agent) {
+  constructor(agent, rootstore) {
     //console.log"Agent Constructor")
-    this.ds = new DataProvider();
+    this.ds = rootstore.rootStore.ds;
 
     this.firstname = agent.firstname;
     this.lastname = agent.lastname;
@@ -23,30 +23,25 @@ export default class AgentModel {
     this.ext = agent.ext;
     this.phoneState = agent.phoneState;
     this.totalcalls = "";
-    
     this.currentCall = { ucid: "", origin: "", start: "", destination: "", callType: "", tickets: [] }
     this.totalcalls = 0;
     this.callsWithoutTickets = []
     this.currentUser = false
-    this.otUserdisplayname= agent.otUserdisplayname
+    this.otUserdisplayname = agent.otUserdisplayname
     this.getCallsWithoutTickets()
-    this.getTotalCalls()
-   
+    
 
     if (agent.currentCall) {
       if (agent.currentCall.ucid) {
-
-
         this.currentCall = { ucid: agent.currentCall.ucid, origin: agent.currentCall.origin, start: agent.currentCall.start, destination: agent.currentCall.destination, callType: agent.currentCall.callType, tickets: [] }
-        if (agent.currentCall.origin != "False") {
-        this.ds.getTicketbyPhone(agent.currentCall.origin).then((data) => this.onTicketsRecieved(data))
+        if (agent.currentCall.origin !== "False") {
+          this.ds.getTicketbyPhone(agent.currentCall.origin).then((data) => this.onTicketsRecieved(data))
         }
-        
       }
     }
   }
 
-  @action 
+  @action
   setCurrentUser() {
     //console.log"setCurrentUser")
     this.currentUser = true
@@ -56,7 +51,7 @@ export default class AgentModel {
   updateState(state) {
     //console.log"updateState")
     this.phoneState = state;
-    this.getCallsWithoutTickets()
+    //this.getCallsWithoutTickets()
   }
 
   @action
@@ -68,68 +63,48 @@ export default class AgentModel {
     this.currentCall.destination = ""
     this.currentCall.callType = ""
     this.currentCall.tickets = null
-    this.getTotalCalls()
-  }
-
-
-
-@action
-onCallListRecieved(data) {
-  //console.log"onCallListRecieved")
-  this.totalcalls = data.data.allCalls.edges.length
-}
-
-
-getTotalCalls(){
-    //console.log"GetTotalCalls")
-    this.ds.getCallsbyAgentExt(this.ext).then((data) => this.onCallListRecieved(data))
     
   }
 
 
-@action
-onCallsWithoutTicketsRecieved(data){
-  //console.log"onCallsWithoutTicketsRecieved")
-  let events= []
 
-  events= data.data.allCalls.edges.map((data) => { if (data.node.event.edges[0]){
-    if (data.node.event.edges[0].node.otId){
-      if  (!data.node.event.edges[0].node.ticket) {
-        
-    
-  const d = new Date(data.node.start)
+
+
+  onCallsWithoutTicketsRecieved(data) {
+    this.totalcalls = data.data.allCalls.edges.length
+    let events = []
+    events = data.data.allCalls.edges.reduce((filtered, data) => {
+      if (data.node.event.edges[0]) {
+        if (data.node.event.edges[0].node.otId) {
+          if (!data.node.event.edges[0].node.ticket) {
+            const d = new Date(data.node.start)
+            let event = { 'id': data.node.ucid, 'start': d.toString(), 'origin': data.node.origin, 'otId': data.node.event.edges[0].node.otId }
+            filtered.push(event)
+          }
+        }
+      }
+      return filtered
+
+
+    },[])
+ 
+
+    this.callsWithoutTickets = events
+
+
+  }
+
   
-  let event=  {'id':data.node.ucid, 'start':d.toString(), 'origin':data.node.origin, 'otId':data.node.event.edges[0].node.otId}
-  
-  
-    
- return event
-}}}
-
-}
-)
-
-this.callsWithoutTickets = events
-
-
-}
-
-  @action
   getCallsWithoutTickets() {
     //console.log"GetCallsWithoutTickets")
     this.ds.getEventsbyAgentExt(this.ext).then((data) => { this.onCallsWithoutTicketsRecieved(data) })
-}
-    
+  }
 
-
-
-  
 
   @action
   setCall(call) {
     //console.log"SetCall" + call.ucid)
     this.currentCall.ucid = call.ucid
-
     this.currentCall.start = call.start
     this.currentCall.destination = call.destination
     this.currentCall.callType = call.callType
@@ -143,11 +118,20 @@ this.callsWithoutTickets = events
     this.getCallsWithoutTickets()
   }
 
-  @action
+
   onTicketsRecieved(data) {
     //console.log"OnTicketsRecieved")
-    this.currentCall.tickets = data.data.allEvents.edges.map((edge) => {
+    this.currentCall.tickets = data.data.allEvents.edges.reduce((filtered,edge) => {
+      if (edge.node.ticket) {
+         filtered.push(edge.node.ticket)
+      }
+      return filtered}
+    ,[])
 
+    
+    
+    
+  /*   this.currentCall.tickets = data.data.allEvents.edges.map((edge) => {
       if (edge.node.ticket) {
         return edge.node.ticket
       }
@@ -155,7 +139,7 @@ this.callsWithoutTickets = events
         return ""
       }
     }
-    )
+    ) */
 
   }
 
@@ -166,11 +150,7 @@ this.callsWithoutTickets = events
 
   }
 
-  @action
-  ticketByPhone(phonenumber) {
-
-  }
-
+  
   onCallRecieved(data) {
     //console.log"onCallRecieved")
 
@@ -181,7 +161,7 @@ this.callsWithoutTickets = events
     if (listofcalls.length > 0) {
 
       this.setCall(listofcalls[0])
-      
+
     }
   }
 }

@@ -3,14 +3,9 @@ import * as React from 'react';
 import Typography from '@material-ui/core/Typography';
 import Card from '@material-ui/core/Card';
 import Divider from '@material-ui/core/Divider';
-import { withTheme } from '@material-ui/core/styles';
-import { withStyles } from '@material-ui/core/styles';
 import { observer } from "mobx-react";
 import Pbar from './ProgressBar/ProgressBar'
-import { Tooltip } from '@material-ui/core/Tooltip';
-// let defaultStyle = { 
-//     color : '#fff' 
-//   };
+
 
 @observer
 class ClientPanel extends React.Component {
@@ -33,10 +28,5 @@ class ClientPanel extends React.Component {
         ); 
       }
     }
-
-
-
-    
-    
 
   export default ClientPanel;

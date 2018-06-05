@@ -1,30 +1,44 @@
-import * as React from 'react';
+import * as React from 'react'
 
 //import AgentList from "./components/TodoList";
-import CssBaseline from '@material-ui/core/CssBaseline';
-import RootStore from "./models/RootStore";
+import CssBaseline from '@material-ui/core/CssBaseline'
+import RootStore from "./models/RootStore"
 import MainLayout from './components/MainLayout'
 //<MainLayout users={this.state.serverData.users}/> 
 import Loader from './components/Loader'
-import DevTools from 'mobx-react-devtools';
 
+import response from './categories'
 import Version from './components/Version'
 //import Perf from 'react-addons-perf'; // ES6
 
 class App extends React.Component {
-  version = "0.1.2"
+  version = "0.1.6"
+
   constructor() {
     super();
     this.store = new RootStore();
     this.store.agentStore.GetAgentList()
     this.store.agentStore.GetQueuesList()
-    this.getCategories().then(
-        (categories) => categories.filter(category => category.state === "Active")).then(
-            (categories) => this.setState({categories:categories}))
+    //this.getCategories().then(
+    //    (categories) => categories.filter(category => category.state === "Active")).then(
+    //        (categories) => this.setState({categories:categories}))
+    
   }
+  
+
   state = {
     categories : [],
     loaded:false
+  }
+
+  componentWillMount(){
+    this.getCategoriesFromResponseFile()
+  }
+  getCategoriesFromResponseFile(){
+    let catlist = response.Category.map(category => { return { id: category.id, title : category.data.Path, state : category.data.State}  })
+    catlist = catlist.filter(category => category.state === "Active")
+    this.setState({categories:catlist})
+    
   }
 
   getCategories() {

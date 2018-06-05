@@ -32,7 +32,7 @@ class AgentStats extends React.Component {
       user_icon = <Tooltip title="Talking"><AccountBox style={{ width: 25, height: 25, color: cyan[500] }} /></Tooltip>
     }
     else if (this.props.user.phoneState === "Ringing") {
-      phone_icon = <PhoneInTalk style={{ color: yellow[500] }} />
+      
       user_icon = <Tooltip title="Ringing"><AccountBox style={{ width: 25, height: 25, color: yellow[500] }} /></Tooltip>
     }
     else if (this.props.user.phoneState === "Busy") {

@@ -5,11 +5,8 @@ import { withTheme } from '@material-ui/core/styles';
 import { observer } from "mobx-react";
 import MailIcon from '@material-ui/icons/Mail';
 import Badge from '@material-ui/core/Badge';
-import { X_OK } from 'constants';
 
-// let defaultStyle = { 
-//     color : '#fff' 
-//   };
+
 
 @observer
 class TicketsPanel extends React.Component {
@@ -28,7 +25,7 @@ class TicketsPanel extends React.Component {
 
         let tickets = []
         for (let i = 0; i < this.props.user.currentCall.tickets.length; i++) {
-          let t
+
           if (this.props.user.currentCall.tickets[i]) {
             let ticket = this.props.user.currentCall.tickets[i]
             if (ticket.title) {

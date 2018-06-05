@@ -144,10 +144,12 @@ node{
   }
   async getTicketbyPhone(phone) {
     this.client.cache.reset();
-
+    let datestart = new Date(Date.now()).toISOString()
+    let start = datestart.slice(0,10)
     let data = await this.client.query({
+
       query: gql`query {  
-              allEvents(phone:"${phone}") {
+              allEvents(phone:"${phone}", end_Gte:"${start}") {
                 edges {
                   node {
                     id

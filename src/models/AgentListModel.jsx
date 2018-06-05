@@ -7,31 +7,26 @@ import AgentModel from "./AgentModel";
 
 export default class AgentListModel {
   constructor(rootStore) {
-
     this.rootStore = rootStore
   }
 
   @observable queues = [];
-  @observable incomingCalls = [];
   @observable agents = [];
 
-  handleMessage(data) {
-
+  async handleMessage(data) {
     if (data.action === "logoff") {
       for (let i = 0; i < this.agents.length; i++) {
         if (data.id === this.agents[i].phoneLogin) {
-
           this.removeAgent(this.agents[i])
         }
       }
     }
-    if (data.action === "login") {
 
+    if (data.action === "login") {
       this.GetAgent(data.id)
     }
 
     if (data.action === "changestate") {
-
       for (let i = 0; i < this.agents.length; i++) {
         if (data.id === this.agents[i].phoneLogin) {
           this.agents[i].updateState(data.data)
@@ -39,43 +34,42 @@ export default class AgentListModel {
         }
       }
     }
+
     if (data.action === "transfer") {
-      this.GetQueuesUpdates()
+      this.GetQueuesUpdates().then(() => {
       for (let i = 0; i < this.agents.length; i++) {
         if (data.data === this.agents[i].phoneLogin) {
           this.agents[i].updateCall(data.id)
         }
-      }
-
+      }})
     }
+
     if (data.action === "transferring") {
       for (let i = 0; i < this.agents.length; i++) {
         if (data.data === this.agents[i].phoneLogin) {
           this.GetAgent(data.data)
-
         }
       }
-
     }
 
     if (data.action === "endcall") {
-      this.GetQueuesUpdates()
+      this.GetQueuesUpdates().then(() => {
       for (let i = 0; i < this.agents.length; i++) {
         if (data.data === this.agents[i].phoneLogin) {
-
           this.agents[i].removeCall()
           this.agents[i].updateState(data.data)
-
         }
       }
     }
+  )
+    }
+
     if (data.action === "create") {
       this.GetQueuesUpdates()
     }
     if (data.action === "calltype") {
       this.GetQueuesUpdates()
     }
-
   }
 
   @computed
@@ -91,12 +85,11 @@ export default class AgentListModel {
   @action
   addAgent(agent) {
 
-    this.agents.push(new AgentModel(agent))
+    this.agents.push(new AgentModel(agent, this))
   }
 
   @action
   async GetAgentList() {
-
     this.rootStore.ds.ListAgents().then((data) => this.onListRecieved(data))
   }
 
@@ -111,28 +104,31 @@ export default class AgentListModel {
 
 
   onQueuesUpdateRecieved(data) {
-    
+
     var listofqueues = [];
     if (data.data.allAgents) { listofqueues = data.data.allAgents.edges.map((edge) => { return edge.node }) }
     for (let i = 0; i < this.queues.length; i++) {
-    listofqueues.forEach((queue) => { if (queue.ext === this.queues[i].ext ) {
+      listofqueues.forEach((queue) => {
+        if (queue.ext === this.queues[i].ext) {
 
-      
-      if (queue.currentCall) {
-        //this.queues[i].updateCall(queue.currentCall.ucid)
-        this.queues[i].currentCall = { callType :  queue.currentCall.callType, origin : queue.currentCall.origin, start:queue.currentCall.start, ucid :  queue.currentCall.ucid }
 
-        
-      console.log( this.queues[i] )
+          if (queue.currentCall) {
+            //this.queues[i].updateCall(queue.currentCall.ucid)
+            this.queues[i].currentCall = { callType: queue.currentCall.callType, origin: queue.currentCall.origin, start: queue.currentCall.start, ucid: queue.currentCall.ucid }
 
-    }else{
-      this.queues[i].removeCall()
+
+            console.log(this.queues[i])
+
+          } else {
+            this.queues[i].removeCall()
+          }
+
+        }
+      })
+
+
     }
-
-    } })
-
-
-  }}
+  }
 
   onListRecieved(data) {
     var listofusers = [];
@@ -143,12 +139,11 @@ export default class AgentListModel {
   }
 
 
-  
+
   onQueuesRecieved(data) {
     var listofqueues = [];
     if (data.data.allAgents) { listofqueues = data.data.allAgents.edges.map((edge) => { return edge.node }) }
-    this.queues=[]
-    
+    this.queues = []
     listofqueues.map((queue) => this.addQueue(queue))
     //this.setState( { serverData : { users : users.users } }
   }
@@ -156,7 +151,7 @@ export default class AgentListModel {
   @action
   addQueue(queue) {
 
-    this.queues.push(new AgentModel(queue))
+    this.queues.push(new AgentModel(queue, this))
   }
 
 
@@ -176,12 +171,12 @@ export default class AgentListModel {
       let found = false;
       for (let i = 0; i < this.agents.length; i++) {
         if (listofusers[0].phoneLogin === this.agents[i].phoneLogin) {
-          let agent = new AgentModel(listofusers[0])
+          let agent = new AgentModel(listofusers[0], this)
           this.agents[i] = agent
           found = true;
         }
         if (found === false) {
-          this.addAgent(new AgentModel(listofusers[0]))
+          this.addAgent(new AgentModel(listofusers[0],this))
         }
       }
     }
