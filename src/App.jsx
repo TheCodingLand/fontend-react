@@ -12,7 +12,7 @@ import Version from './components/Version'
 //import Perf from 'react-addons-perf'; // ES6
 
 class App extends React.Component {
-  version = "0.1.6"
+  version = "0.1.7"
 
   constructor() {
     super();
@@ -33,6 +33,7 @@ class App extends React.Component {
 
   componentWillMount(){
     this.getCategoriesFromResponseFile()
+    setInterval(()=> {console.log(this.store)},5000)
   }
   getCategoriesFromResponseFile(){
     let catlist = response.Category.map(category => { return { id: category.id, title : category.data.Path, state : category.data.State}  })

@@ -14,8 +14,9 @@ export default class AgentModel {
   @observable callsWithoutTickets;
   @observable otUserdisplayname;
   constructor(agent, rootstore) {
+    console.log("Loading New Agent")
     //console.log"Agent Constructor")
-    this.ds = rootstore.rootStore.ds;
+    this.ds = rootstore.ds;
 
     this.firstname = agent.firstname;
     this.lastname = agent.lastname;

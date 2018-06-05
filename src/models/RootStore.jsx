@@ -7,9 +7,10 @@ import DataProvider from './../DataProvider'
 
 export default class RootStore {
     constructor() {
+    console.log("Loading root store")
     let SOCKET_URL = "ws.lbr.lu"
     this.ds = new DataProvider();  
-    this.agentStore = new AgentListModel(this)
+    this.agentStore = new AgentListModel(this.ds)
     this.pendingUpdates=[]
     this.lastupdate = {}
     
@@ -32,7 +33,7 @@ export default class RootStore {
         for(var i=0; i < this.pendingUpdates.length; i++) {
             let d = this.pendingUpdates[i]
         if (d.action === data.action && d.data === data.data && d.id === data.id && d.item === data.item){      
-           console.log("already doing " + data.item) 
+           
         updating = true 
         }
     
@@ -56,10 +57,10 @@ export default class RootStore {
         
         if (this.alreadyUpdating(data) === false) {
             this.lastupdate=data
-            console.log(data)
+            //console.log(data)
             this.pendingUpdates.push(data)
             this.agentStore.handleMessage(data).then(() => { this.pendingUpdates= this.pendingUpdates.filter((d) => { return d !== data })})
-            console.log(this.pendingUpdates)
+            //console.log(this.pendingUpdates)
         }}
 
         //.then(() => { this.pendingUpdates= this.pendingUpdates.filter((d) => { return d != data })})

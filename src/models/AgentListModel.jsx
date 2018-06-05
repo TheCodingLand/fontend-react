@@ -6,8 +6,8 @@ import AgentModel from "./AgentModel";
 //agents : login, logoff, changestate, linkcall
 
 export default class AgentListModel {
-  constructor(rootStore) {
-    this.rootStore = rootStore
+  constructor(ds) {
+    this.ds = ds
   }
 
   @observable queues = [];
@@ -44,13 +44,14 @@ export default class AgentListModel {
       }})
     }
 
-    if (data.action === "transferring") {
+ /*    if (data.action === "transferring") {
       for (let i = 0; i < this.agents.length; i++) {
         if (data.data === this.agents[i].phoneLogin) {
           this.GetAgent(data.data)
+          data.
         }
       }
-    }
+    } */
 
     if (data.action === "endcall") {
       this.GetQueuesUpdates().then(() => {
@@ -90,16 +91,16 @@ export default class AgentListModel {
 
   @action
   async GetAgentList() {
-    this.rootStore.ds.ListAgents().then((data) => this.onListRecieved(data))
+    this.ds.ListAgents().then((data) => this.onListRecieved(data))
   }
 
   @action
   async GetQueuesList() {
-    this.rootStore.ds.getQueueLines().then((data) => this.onQueuesRecieved(data))
+    this.ds.getQueueLines().then((data) => this.onQueuesRecieved(data))
   }
   @action
   async GetQueuesUpdates() {
-    this.rootStore.ds.getQueueLines().then((data) => this.onQueuesUpdateRecieved(data))
+    this.ds.getQueueLines().then((data) => this.onQueuesUpdateRecieved(data))
   }
 
 
@@ -117,7 +118,7 @@ export default class AgentListModel {
             this.queues[i].currentCall = { callType: queue.currentCall.callType, origin: queue.currentCall.origin, start: queue.currentCall.start, ucid: queue.currentCall.ucid }
 
 
-            console.log(this.queues[i])
+           // console.log(this.queues[i])
 
           } else {
             this.queues[i].removeCall()
@@ -157,7 +158,7 @@ export default class AgentListModel {
 
   @action
   async GetAgent(login) {
-    this.rootStore.ds.GetAgent(login).then((data) => this.onAgentRecieved(data))
+    this.ds.GetAgent(login).then((data) => this.onAgentRecieved(data))
 
   }
 

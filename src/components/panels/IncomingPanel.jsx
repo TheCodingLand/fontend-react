@@ -22,7 +22,7 @@ class IncomingPanel extends React.Component {
           
     let steps = []
     activestep =-1
-    //console.log(queue)
+    
     if (queue.currentCall){
 
     if (queue.currentCall.ucid) {
