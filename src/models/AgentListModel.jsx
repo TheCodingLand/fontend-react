@@ -176,9 +176,10 @@ export default class AgentListModel {
           this.agents[i] = agent
           found = true;
         }
+      }
         if (found === false) {
           this.addAgent(new AgentModel(listofusers[0],this))
-        }
+       
       }
     }
     //this.setState( { serverData : { users : users.users } }

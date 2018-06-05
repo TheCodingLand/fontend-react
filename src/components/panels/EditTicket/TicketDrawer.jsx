@@ -55,12 +55,12 @@ render() {
   
     <div>
       
-      {this.state.ext ? <Button onClick={ () => {this.handleDrawerOpen();}}>Open Ticket</Button> :
+ {this.state.agent ? <Button color="secondary" onClick={ () => {this.handleDrawerOpen();}}>Open Ticket ({this.state.agent.callsWithoutTickets.length})</Button> :
         <FormControl className={classes.formControl}>
           <InputLabel htmlFor="age-helper">My Extention</InputLabel>
           <Select
             onChange={this.handleChange}
-            input={<Input value="default" name="ext" id="age-helper" />}
+            input={<Input value="default" name="agent" id="age-helper" />}
           >
           { this.props.store.agentStore.agents.map((agent) => {
           return <MenuItem key={agent.ext} value={agent}>{agent.ext}</MenuItem> } )}
@@ -79,7 +79,7 @@ render() {
             </IconButton> :
           </div>
  
-   <div><TicketForm store={this.props.store} categories={this.props.categories} agent={this.state.ext} /></div>
+   <div><TicketForm store={this.props.store} categories={this.props.categories} agent={this.state.agent} /></div>
  </div>
 </Drawer>
 </div>
