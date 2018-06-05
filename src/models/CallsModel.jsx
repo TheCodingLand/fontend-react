@@ -10,11 +10,6 @@ export default class CallModel {
     this.destination = call.destination
     this.callType = call.callType
     
-    
-
-
-
-    
     }
 
     getClientTickets()
